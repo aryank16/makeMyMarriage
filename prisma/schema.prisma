@@ -1,0 +1,524 @@
+// MakeMyMarriage — schema
+// See the product spec for the reasoning behind the four load-bearing decisions:
+//   1. Rsvp is keyed on (guestId, eventId) and IS the invitation record.
+//   2. Membership.permissions is a JSON scope object, not a boolean.
+//   3. Money is BigInt paise. Never Float, never Int.
+//   4. Every tenant-scoped table carries weddingId directly.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------- Identity and tenancy ----------
+
+model User {
+  id        String   @id @default(cuid())
+  phone     String   @unique // E.164, primary identity
+  email     String?  @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships     Membership[]
+  createdWeddings Wedding[]    @relation("WeddingCreator")
+  assignedTasks   Task[]       @relation("TaskAssignees")
+  auditEntries    AuditLog[]
+}
+
+model Wedding {
+  id           String    @id @default(cuid())
+  slug         String    @unique // public website slug
+  brideName    String
+  groomName    String
+  weddingDate  DateTime? // null until fixed
+  primaryCity  String
+  plan         Plan      @default(FREE)
+  plannedTotal BigInt? // paise, top-down budget
+  createdById  String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  createdBy        User             @relation("WeddingCreator", fields: [createdById], references: [id])
+  memberships      Membership[]
+  events           Event[]
+  households       Household[]
+  guests           Guest[]
+  rsvps            Rsvp[]
+  invitations      Invitation[]
+  vendors          Vendor[]
+  budgetCategories BudgetCategory[]
+  payments         Payment[]
+  tasks            Task[]
+  photos           Photo[]
+  website          Website?
+  messageLogs      MessageLog[]
+  auditLogs        AuditLog[]
+}
+
+model Membership {
+  id           String    @id @default(cuid())
+  weddingId    String
+  userId       String
+  role         Role
+  side         Side      @default(SHARED)
+  permissions  Json // enforced scope — see lib/auth/permissions.ts
+  sharesBudget Boolean   @default(false) // opt in to cross-side budget read
+  invitedById  String?
+  acceptedAt   DateTime?
+  createdAt    DateTime  @default(now())
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([weddingId, userId])
+  @@index([userId])
+}
+
+// ---------- Events ----------
+
+model Event {
+  id               String    @id @default(cuid())
+  weddingId        String
+  name             String
+  type             EventType
+  startAt          DateTime // stored UTC, rendered Asia/Kolkata
+  endAt            DateTime?
+  venueName        String?
+  venueAddress     String?
+  venueCity        String?
+  venueMapUrl      String?
+  hostSide         Side      @default(SHARED)
+  dressCode        String?
+  expectedCount    Int?
+  attendanceFactor Float     @default(0.7) // non-responder share for planning
+  publicOnWebsite  Boolean   @default(true)
+  notes            String?
+  sortOrder        Int       @default(0)
+  createdAt        DateTime  @default(now())
+
+  wedding     Wedding           @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  rsvps       Rsvp[]
+  vendors     VendorEvent[]
+  photos      Photo[]
+  tasks       Task[]
+  invitations InvitationEvent[]
+
+  @@index([weddingId, startAt])
+}
+
+// ---------- Guests ----------
+
+model Household {
+  id          String   @id @default(cuid())
+  weddingId   String
+  label       String // "The Sharma family"
+  inviteToken String   @unique // 32 bytes base64url, permanent
+  address     String?
+  city        String?
+  createdAt   DateTime @default(now())
+
+  wedding     Wedding      @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  guests      Guest[]
+  invitations Invitation[]
+  photos      Photo[]
+
+  @@index([weddingId])
+}
+
+model Guest {
+  id                 String            @id @default(cuid())
+  weddingId          String
+  householdId        String
+  name               String
+  phone              String? // E.164, normalised for dedupe
+  email              String?
+  side               Side
+  relationship       String? // "Bua", "College friend"
+  isPrimary          Boolean           @default(false) // household contact
+  dietary            DietaryPreference @default(UNKNOWN)
+  allergyNotes       String?
+  accessibilityNotes String?
+  tags               String[]
+  notes              String?
+  isPlusOne          Boolean           @default(false)
+  createdAt          DateTime          @default(now())
+
+  wedding   Wedding   @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  rsvps     Rsvp[]
+
+  @@index([weddingId, side])
+  @@index([weddingId, phone])
+}
+
+// THE KEYSTONE: one row per guest per event.
+// Row exists with PENDING = invited. No row = not invited.
+model Rsvp {
+  id          String     @id @default(cuid())
+  weddingId   String
+  guestId     String
+  eventId     String
+  status      RsvpStatus @default(PENDING)
+  respondedAt DateTime?
+  source      RsvpSource @default(GUEST) // keeps response-rate metrics honest
+  message     String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  guest   Guest   @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  event   Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([guestId, eventId])
+  @@index([weddingId, eventId, status])
+}
+
+// ---------- Invitations and messaging ----------
+
+model Invitation {
+  id          String   @id @default(cuid())
+  weddingId   String
+  householdId String
+  title       String
+  bodyText    String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+
+  wedding     Wedding           @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  household   Household         @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  events      InvitationEvent[]
+  messageLogs MessageLog[]
+
+  @@index([weddingId])
+}
+
+model InvitationEvent {
+  invitationId String
+  eventId      String
+
+  invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  event      Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@id([invitationId, eventId])
+}
+
+model MessageLog {
+  id           String        @id @default(cuid())
+  weddingId    String
+  invitationId String?
+  guestId      String?
+  channel      Channel
+  templateKey  String?
+  status       MessageStatus @default(QUEUED)
+  providerId   String?
+  costPaise    BigInt?
+  error        String?
+  sentAt       DateTime?
+  createdAt    DateTime      @default(now())
+
+  wedding    Wedding     @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  invitation Invitation? @relation(fields: [invitationId], references: [id])
+
+  @@index([weddingId, channel, createdAt])
+}
+
+// ---------- Vendors, budget, payments ----------
+
+model Vendor {
+  id            String         @id @default(cuid())
+  weddingId     String
+  name          String
+  category      VendorCategory
+  contactPerson String?
+  phone         String?
+  email         String?
+  side          Side           @default(SHARED)
+  status        VendorStatus   @default(SHORTLISTED)
+  agreedTotal   BigInt? // paise
+  contractUrl   String?
+  rating        Int?
+  notes         String?
+  createdAt     DateTime       @default(now())
+
+  wedding  Wedding       @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  events   VendorEvent[]
+  payments Payment[]
+  tasks    Task[]
+
+  @@index([weddingId, category])
+}
+
+model VendorEvent {
+  vendorId String
+  eventId  String
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@id([vendorId, eventId])
+}
+
+model BudgetCategory {
+  id            String @id @default(cuid())
+  weddingId     String
+  name          String
+  side          Side   @default(SHARED)
+  plannedAmount BigInt @default(0) // paise
+  sortOrder     Int    @default(0)
+
+  wedding  Wedding   @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  payments Payment[]
+
+  @@unique([weddingId, name])
+}
+
+model Payment {
+  id           String         @id @default(cuid())
+  weddingId    String
+  categoryId   String
+  vendorId     String?
+  description  String
+  amount       BigInt // paise
+  side         Side           @default(SHARED)
+  paidByUserId String?
+  dueDate      DateTime?
+  paidAt       DateTime?
+  method       PaymentMethod?
+  receiptUrl   String?
+  status       PaymentStatus  @default(DUE)
+  createdAt    DateTime       @default(now())
+
+  wedding  Wedding        @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  category BudgetCategory @relation(fields: [categoryId], references: [id])
+  vendor   Vendor?        @relation(fields: [vendorId], references: [id])
+
+  @@index([weddingId, status, dueDate])
+}
+
+// ---------- Tasks ----------
+
+model Task {
+  id                String       @id @default(cuid())
+  weddingId         String
+  title             String
+  description       String?
+  dueDate           DateTime?
+  offsetDays        Int? // negative = before wedding day
+  dueDateOverridden Boolean      @default(false) // blocks auto-shift on date change
+  templateKey       String?
+  eventId           String?
+  vendorId          String?
+  status            TaskStatus   @default(TODO)
+  priority          TaskPriority @default(MEDIUM)
+  completedAt       DateTime?
+  createdAt         DateTime     @default(now())
+
+  wedding   Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  event     Event?  @relation(fields: [eventId], references: [id])
+  vendor    Vendor? @relation(fields: [vendorId], references: [id])
+  assignees User[]  @relation("TaskAssignees")
+
+  @@index([weddingId, status, dueDate])
+}
+
+// ---------- Photos and website ----------
+
+model Photo {
+  id               String      @id @default(cuid())
+  weddingId        String
+  eventId          String?
+  householdId      String? // uploader, when a guest
+  uploadedByUserId String? // uploader, when an organizer
+  storagePath      String // private bucket key
+  renditionPath    String?
+  thumbnailPath    String?
+  width            Int?
+  height           Int?
+  sizeBytes        Int?
+  capturedAt       DateTime? // from EXIF, drives event matching
+  status           PhotoStatus @default(PENDING)
+  reportedCount    Int         @default(0)
+  createdAt        DateTime    @default(now())
+
+  wedding   Wedding    @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  event     Event?     @relation(fields: [eventId], references: [id])
+  household Household? @relation(fields: [householdId], references: [id])
+
+  @@index([weddingId, status, capturedAt])
+}
+
+model Website {
+  id             String         @id @default(cuid())
+  weddingId      String         @unique
+  template       String         @default("classic")
+  privacy        WebsitePrivacy @default(TOKEN_GATED)
+  passphraseHash String?
+  sections       Json // toggles and section copy
+  published      Boolean        @default(false)
+  updatedAt      DateTime       @updatedAt
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  weddingId  String
+  actorId    String?
+  action     String // "payment.update", "membership.role_change"
+  entityType String
+  entityId   String
+  before     Json?
+  after      Json?
+  createdAt  DateTime @default(now())
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  actor   User?   @relation(fields: [actorId], references: [id])
+
+  @@index([weddingId, createdAt])
+}
+
+// ---------- Enums ----------
+
+enum Plan {
+  FREE
+  PAID
+}
+
+enum Side {
+  BRIDE
+  GROOM
+  SHARED
+}
+
+enum Role {
+  OWNER
+  COUPLE
+  PARENT
+  PLANNER
+  COORDINATOR
+  CONTRIBUTOR
+  VIEWER
+}
+
+enum EventType {
+  ROKA
+  ENGAGEMENT
+  MEHENDI
+  HALDI
+  SANGEET
+  BARAAT
+  WEDDING
+  VIDAAI
+  RECEPTION
+  CUSTOM
+}
+
+enum RsvpStatus {
+  PENDING
+  YES
+  NO
+  MAYBE
+}
+
+enum RsvpSource {
+  GUEST
+  MANUAL
+}
+
+enum DietaryPreference {
+  UNKNOWN
+  VEG
+  NON_VEG
+  JAIN
+  VEGAN
+  NO_ONION_GARLIC
+  OTHER
+}
+
+enum VendorCategory {
+  VENUE
+  CATERING
+  PHOTOGRAPHY
+  VIDEOGRAPHY
+  DECOR
+  MAKEUP
+  MEHENDI_ARTIST
+  PANDIT
+  MUSIC
+  TRANSPORT
+  INVITATIONS
+  TROUSSEAU
+  JEWELLERY
+  CHOREOGRAPHER
+  ACCOMMODATION
+  OTHER
+}
+
+enum VendorStatus {
+  SHORTLISTED
+  NEGOTIATING
+  BOOKED
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  DUE
+  PARTIAL
+  PAID
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  UPI
+  BANK_TRANSFER
+  CARD
+  CHEQUE
+  OTHER
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum PhotoStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum WebsitePrivacy {
+  TOKEN_GATED
+  PASSPHRASE
+  PUBLIC
+}
+
+enum Channel {
+  LINK
+  EMAIL
+  WHATSAPP
+  SMS
+}
+
+enum MessageStatus {
+  QUEUED
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
