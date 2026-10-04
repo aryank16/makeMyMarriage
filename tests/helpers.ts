@@ -3,8 +3,31 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, type Role, type Side } from '@prisma/client';
 import { ROLE_DEFAULTS, type PermissionScope } from '../src/lib/auth/permissions';
 
+/**
+ * Tests run against a SEPARATE DATABASE, never a separate schema.
+ *
+ * Prisma hard-qualifies table names with the datasource schema at client
+ * generation time, so model queries ignore `search_path` completely. A
+ * `?schema=` parameter or `-c search_path=` changes raw SQL but leaves
+ * `deleteMany()` pointing at `public` — which means these tests silently
+ * truncate the development database. That is not hypothetical; it happened
+ * twice while building this.
+ *
+ * The guard below is the backstop. Do not remove it.
+ */
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) throw new Error('DATABASE_URL is not set');
+
+const dbName = new URL(connectionString).pathname.replace(/^\//, '');
+if (!/test/i.test(dbName)) {
+  throw new Error(
+    `Refusing to run tests against database "${dbName}": the name must ` +
+      'contain "test". Tests truncate every table.',
+  );
+}
+
 export const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
+  adapter: new PrismaPg({ connectionString }),
 });
 
 export async function resetDb() {

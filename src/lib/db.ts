@@ -1,6 +1,8 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 
+// The app uses the pooled connection (Supabase transaction pooler, port 6543).
+// Migrations use DIRECT_URL instead — see prisma.config.ts.
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error('DATABASE_URL is not set');
 
