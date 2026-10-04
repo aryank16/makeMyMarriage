@@ -17,8 +17,12 @@ datasource db {
 
 model User {
   id        String   @id @default(cuid())
-  phone     String   @unique // E.164, primary identity
-  email     String?  @unique
+  // Email is the login identity during development (Supabase magic link).
+  // Phone is what the product actually wants in India and is collected at
+  // onboarding; it becomes the identity when phone OTP is enabled before launch.
+  email     String   @unique
+  phone     String?  @unique // E.164
+  supabaseId String? @unique // auth.users.id
   name      String
   avatarUrl String?
   createdAt DateTime @default(now())

@@ -46,8 +46,13 @@ export async function resetDb() {
 }
 
 export async function makeUser(name = 'Test User') {
+  const unique = randomUUID();
   return prisma.user.create({
-    data: { name, phone: `+9198${randomBytes(4).readUInt32BE(0) % 100000000}` },
+    data: {
+      name,
+      email: `${unique}@test.local`,
+      phone: `+9198${randomBytes(4).readUInt32BE(0) % 100000000}`,
+    },
   });
 }
 

@@ -78,11 +78,23 @@ scoping and scope integrity. These are the tests that matter: they have been
 mutation-checked, so breaking the permission check fails 6 of them and letting
 non-members through fails 4.
 
+## Authentication
+
+Email magic link via Supabase Auth, for now. `src/lib/auth/session.ts` resolves
+the Supabase session to our own `User` row, creating it on first sign-in and
+claiming any row that was created by an earlier invitation to the same address.
+
+Phone OTP is what the product actually wants in India and is what the spec
+specifies, but it needs a paid SMS provider. `User.phone` exists and is
+optional; switching identity to phone is a provider change plus a migration,
+not a rewrite.
+
+Supabase needs **Authentication → URL Configuration → Site URL** set to
+`http://localhost:3000`, or magic links redirect nowhere useful.
+
 ## Not yet built
 
-Authentication is not wired up — `requirePermission` takes a `userId` and the
-session layer that supplies it is the next task. Supabase Auth with phone OTP is
-the intended provider; see the spec.
+Guests, RSVP, vendors, budget, tasks and photos. Phase 2 onward; see the spec.
 
 ## Viewing the data
 
