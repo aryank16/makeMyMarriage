@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440, initial-scale=1.0">
+  <title>MakeMyMarriage — Create Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #FAF7F2;
+      color: #1A1613;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    .font-serif-custom {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-weight: 400;
+    }
+    .input-field {
+      width: 100%;
+      height: 52px;
+      border: 1px solid #E4DCD1;
+      border-radius: 10px;
+      background-color: #FFFFFF;
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+      padding: 0 14px;
+      color: #1A1613;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .input-field:focus {
+      border-color: #A1472F;
+    }
+    .input-field::placeholder {
+      color: #A39B92;
+    }
+    .btn-primary {
+      width: 100%;
+      height: 52px;
+      border-radius: 10px;
+      background-color: #A1472F;
+      color: #FFFFFF;
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s ease;
+    }
+    .btn-primary:hover {
+      background-color: #8A3B26;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#FAF7F2] text-[#1A1613]">
+  <div class="w-[1440px] min-h-screen mx-auto flex">
+    
+    <!-- LEFT 45% (648px) -->
+    <div class="w-[45%] min-h-screen bg-[#FAF7F2] flex flex-col justify-between p-12 relative border-r border-[#E4DCD1]">
+      <!-- Top Brand Anchor -->
+      <div class="flex items-center gap-3"><a href="#" class="inline-flex items-center no-underline"><img src="https://lh3.googleusercontent.com/aida/AEtjO1VT-Ot5yYU8j-UKegYykwud_cAz-Q4xchLbSPlYcLen_nXVNHiB6QKuCC_vwmZEKa1lAZKNdJj3R7TuaArZt-QGyo1z_wWsWmpUkybq9vHh9o6mnfoU3wz6NmeoHOPBHTYukO4bdGU2Wmncft_maXFTeUqIuvk-Oz8UqUGAWN7rx04ejlgtOaTGvCOpD2betTF44uhgyJEJPhUvCSlA_qoBfinGaGKNZ_4uN6Xo2xkrZrfV9T1TMWe1fYmD" alt="MakeMyMarriage" class="h-8 w-auto object-contain"></a></div>
+
+      <!-- Centered Form Container (Max 400px) -->
+      <div class="w-full max-w-[400px] mx-auto my-auto py-8">
+        <div class="mb-7">
+          <h1 class="font-serif-custom text-[40px] leading-[1.1] tracking-[-0.02em] text-[#1A1613] mb-2.5">
+            Create your account
+          </h1>
+          <p class="text-[17px] leading-[1.6] text-[#6B625A]">
+            You'll set up your wedding next.
+          </p>
+        </div><div class="mb-6"><button type="button" class="w-full h-[50px] bg-white border border-[#E4DCD1] hover:border-[#1A1613] rounded-[10px] flex items-center justify-center gap-3 text-[15px] font-medium text-[#1A1613] transition-colors shadow-sm"><svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.87c2.26-2.09 3.67-5.17 3.67-9.15z"></path><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.87-3.05c-1.08.72-2.45 1.16-4.06 1.16-3.13 0-5.78-2.11-6.73-4.96H1.25v3.15C3.26 21.36 7.34 24 12 24z"></path><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24 0-.75.13-1.52.38-2.24V6.61H1.25C.45 8.22 0 10.05 0 12s.45 3.78 1.25 5.39l4.02-3.15z"></path><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.61l4.02 3.15c.95-2.85 3.6-4.96 6.73-4.96z"></path></svg>Continue with Google</button><div class="flex items-center my-5"><div class="flex-1 h-[1px] bg-[#E4DCD1]"></div><span class="px-3 text-[12px] tracking-[0.08em] uppercase text-[#6B625A] font-medium">or</span><div class="flex-1 h-[1px] bg-[#E4DCD1]"></div></div></div>
+
+        <form class="flex flex-col gap-5" onsubmit="event.preventDefault();">
+          <!-- Name Field -->
+          <div>
+            <label class="block text-[14px] font-medium text-[#1A1613] mb-2" for="fullname">
+              Your name
+            </label>
+            <input id="fullname" type="text" placeholder="Priya Sharma" class="input-field" required="">
+          </div>
+
+          <!-- Email Field -->
+          <div>
+            <label class="block text-[14px] font-medium text-[#1A1613] mb-2" for="email">
+              Email
+            </label>
+            <input id="email" type="email" placeholder="you@example.com" class="input-field" required="">
+          </div>
+
+          <!-- Password Field with Helper Text -->
+          <div>
+            <label class="block text-[14px] font-medium text-[#1A1613] mb-2" for="password">
+              Password
+            </label>
+            <input id="password" type="password" placeholder="••••••••••••" class="input-field" required="">
+            <p class="text-[14px] text-[#6B625A] mt-2">
+              At least 8 characters
+            </p>
+          </div>
+
+          <!-- Primary Button -->
+          <div class="pt-1">
+            <button type="submit" class="btn-primary">
+              Create account
+            </button>
+          </div>
+
+          <!-- Switch to Sign In -->
+          <div class="text-center text-[15px] text-[#6B625A] pt-1">
+            Already have an account? 
+            <a href="#" class="text-[#A1472F] hover:text-[#8A3B26] font-medium transition-colors ml-1">
+              Sign in
+            </a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Legal Policy Line at Bottom -->
+      <div class="w-full max-w-[400px] mx-auto pt-6 border-t border-[#E4DCD1] text-center">
+        <p class="text-[14px] leading-[1.6] text-[#6B625A]">
+          By creating an account you agree to our 
+          <a href="#" class="text-[#A1472F] hover:text-[#8A3B26] transition-colors">Terms</a> and 
+          <a href="#" class="text-[#A1472F] hover:text-[#8A3B26] transition-colors">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- RIGHT 55% (792px) - DEEP PANEL -->
+    <div class="w-[55%] min-h-screen bg-[#F7F3EC] text-[#1A1613] flex items-center relative p-8"><div class="absolute top-8 right-12 flex justify-end"><span class="text-[12px] tracking-[0.08em] uppercase font-medium text-[#6B625A] bg-[#FAF7F2] border border-[#E4DCD1] px-3.5 py-1.5 rounded-full">Modern Indian Wedding Software</span></div><div class="w-full max-w-[460px]"><div class="bg-[#F2ECE4] border border-[#E3DAD0] rounded-[20px] p-7 shadow-sm text-[#1A1613] flex flex-col justify-between relative"><div class="flex items-center justify-between text-[11px] font-medium tracking-[0.06em] text-[#786E64] mb-8"><div class="flex items-center gap-1.5 bg-[#FAF7F2] border border-[#E3DAD0] px-2.5 py-1 rounded-md"><svg class="w-3.5 h-3.5 text-[#8C8278]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><span class="">42 DAYS TO GO</span></div><div class="flex items-center gap-1.5 text-[11px] font-medium tracking-[0.06em] text-[#635B52]"><span class="inline-block w-1.5 h-1.5 rounded-full bg-[#528F65]"></span><span class="">LIVE SYNCED</span></div></div><div class="flex flex-col items-center text-center my-2"><div class="w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#E3DAD0] flex items-center justify-center mb-3.5 shadow-sm"><svg class="w-4 h-4 text-[#786E64]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div class="text-[11px] tracking-[0.15em] font-medium text-[#7D736A] uppercase mb-1.5">ACTIVE CELEBRATION</div><h2 class="font-serif-custom text-[32px] leading-[1.1] text-[#1A1613] mb-2">Aryan &amp; Ariana</h2><div class="flex items-center justify-center gap-1.5 text-[12px] text-[#786E64]"><svg class="w-3.5 h-3.5 text-[#9E948A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span class="">The Oberoi Udaivilas · Udaipur</span></div></div><div class="bg-white rounded-[14px] p-5 border border-[#E3DAD0] shadow-sm my-6"><p class="text-[13px] leading-[1.65] text-[#4A433C] italic text-center mb-5 font-normal">"One shared space for your family, vendors, and closest circle. Everything in calm, effortless sync."</p><div class="pt-4 border-t border-[#EDE7DF] flex items-center justify-between text-[11px]"><span class="tracking-[0.08em] font-medium text-[#786E64] uppercase">RSVP ATTENDANCE</span><span class="font-semibold text-[#1A1613] tracking-[0.04em]">420 CONFIRMED</span></div></div><div class="pt-2 flex items-center justify-between text-[12px] text-[#786E64]"><div class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-[#8C8278]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg><span class="">Encrypted Planning Suite</span></div><span class="text-[#9E948A] text-[11px] font-mono">v2.4</span></div></div></div><div class="absolute bottom-8 left-12 right-12 flex items-center justify-between text-[13px] text-[#6B625A]"><span class="italic font-serif-custom text-[17px] text-[#1A1613]">Thoughtfully crafted for families</span><span class="">© MakeMyMarriage</span></div></div>
+
+  </div>
+
+
+
+</body></html>

@@ -1,0 +1,784 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeMyMarriage — Indian Wedding Planning Software</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bone: '#FAF7F2',
+            surface: '#FFFFFF',
+            textPrimary: '#1A1613',
+            textSecondary: '#6B625A',
+            accent: '#A1472F',
+            accentHover: '#8A3B26',
+            deepEmerald: '#1F4D42',
+            borderWarm: '#E4DCD1',
+          },
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            sans: ['"Inter"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FAF7F2;
+      color: #1A1613;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .h1-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 68px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 400;
+    }
+    .h2-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 44px;
+      line-height: 1.15;
+      font-weight: 400;
+    }
+    .h3-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 24px;
+      font-weight: 400;
+    }
+    .numeral {
+      font-family: 'Instrument Serif', Georgia, serif;
+      color: #A1472F;
+      font-weight: 400;
+    }
+    .body-large {
+      font-size: 19px;
+      line-height: 1.6;
+      color: #6B625A;
+    }
+    .body-default {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #6B625A;
+    }
+    .label-caps {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+      color: #A1472F;
+    }
+    .btn-primary {
+      background-color: #A1472F;
+      color: #FAF7F2;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 15px;
+      display: inline-block;
+      text-align: center;
+      transition: background-color 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      background-color: #8A3B26;
+    }
+    .border-standard {
+      border: 1px solid #E4DCD1;
+    }
+    .card-radius {
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-bone text-textPrimary">
+
+  <!-- NAVIGATION -->
+  <header class="sticky top-0 z-50 bg-bone border-b border-borderWarm" style="height: 72px;">
+    <div class="max-w-[1200px] h-full mx-auto px-6 flex items-center justify-between">
+      <!-- Left: Logo -->
+      <a href="#" class="inline-flex items-center hover:opacity-90 transition-opacity"><img src="https://lh3.googleusercontent.com/aida/AEtjO1VT-Ot5yYU8j-UKegYykwud_cAz-Q4xchLbSPlYcLen_nXVNHiB6QKuCC_vwmZEKa1lAZKNdJj3R7TuaArZt-QGyo1z_wWsWmpUkybq9vHh9o6mnfoU3wz6NmeoHOPBHTYukO4bdGU2Wmncft_maXFTeUqIuvk-Oz8UqUGAWN7rx04ejlgtOaTGvCOpD2betTF44uhgyJEJPhUvCSlA_qoBfinGaGKNZ_4uN6Xo2xkrZrfV9T1TMWe1fYmD" alt="MakeMyMarriage" class="h-8 w-auto object-contain"></a>
+
+      <!-- Center-Right Navigation Links & Button -->
+      <div class="flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-7 text-[15px] font-medium text-textSecondary">
+          <a href="#how-it-works" class="hover:text-textPrimary transition-colors">How it works</a>
+          <a href="#features" class="hover:text-textPrimary transition-colors">Features</a>
+          <a href="#faq" class="hover:text-textPrimary transition-colors">FAQ</a>
+        </nav>
+        <a href="#early-access" class="btn-primary">Start planning for free</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="max-w-[1200px] mx-auto px-6 py-24 lg:py-28">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <!-- LEFT 45% (5 cols on lg grid) -->
+        <div class="lg:col-span-5 flex flex-col items-start pr-0 lg:pr-4">
+          <span class="label-caps mb-4">WEDDING PLANNING</span>
+          <h1 class="h1-title text-textPrimary mb-6">
+            Every function. Every guest. One place.
+          </h1>
+          <p class="body-large max-w-[460px] mb-8">
+            From mehendi to reception — track who’s invited to what, collect RSVPs without asking anyone to sign up, and keep every photo in one gallery.
+          </p>
+          <div class="flex flex-col items-start gap-3">
+            <a href="#early-access" class="btn-primary">Start planning for free</a>
+            <span class="text-[15px] text-textSecondary">
+              Free while we’re in early access. No card needed.
+            </span>
+          </div>
+        </div>
+
+        <!-- RIGHT 55% (7 cols on lg grid) -->
+        <div class="lg:col-span-7">
+          <!-- BROWSER WINDOW MOCKUP -->
+          <div class="bg-surface border-standard card-radius shadow-sm overflow-hidden">
+            <!-- Browser Header Bar -->
+            <div class="bg-[#F6F2EC] px-4 py-3 border-b border-borderWarm flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-[#D4C8B8]"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-[#D4C8B8]"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-[#D4C8B8]"></div>
+                <span class="ml-3 text-[12px] text-textSecondary font-mono tracking-tight">app.makemymarriage.com/rohit-ananya/guests</span>
+              </div>
+              <span class="text-[12px] text-textSecondary font-medium px-2 py-0.5 rounded bg-white/70 border border-borderWarm">Live Sync</span>
+            </div>
+
+            <div class="p-6">
+              <!-- Top Stat Cards (4 items) -->
+              <div class="grid grid-cols-4 gap-3 mb-6">
+                <div class="bg-bone border-standard card-radius p-3">
+                  <div class="text-[11px] uppercase tracking-wider text-textSecondary font-medium">Invited</div>
+                  <div class="font-serif text-[26px] text-textPrimary leading-none mt-1">284</div>
+                </div>
+                <div class="bg-bone border-standard card-radius p-3">
+                  <div class="text-[11px] uppercase tracking-wider text-textSecondary font-medium">Replied</div>
+                  <div class="font-serif text-[26px] text-accent leading-none mt-1">196</div>
+                </div>
+                <div class="bg-bone border-standard card-radius p-3">
+                  <div class="text-[11px] uppercase tracking-wider text-textSecondary font-medium">Attending</div>
+                  <div class="font-serif text-[26px] text-deepEmerald leading-none mt-1">412</div>
+                </div>
+                <div class="bg-bone border-standard card-radius p-3">
+                  <div class="text-[11px] uppercase tracking-wider text-textSecondary font-medium">Awaiting</div>
+                  <div class="font-serif text-[26px] text-textSecondary leading-none mt-1">88</div>
+                </div>
+              </div>
+
+              <!-- Guest Table -->
+              <div class="border-standard card-radius overflow-hidden bg-white">
+                <table class="w-full text-left text-[13px] border-collapse">
+                  <thead>
+                    <tr class="bg-bone border-b border-borderWarm text-[11px] uppercase tracking-wider text-textSecondary font-medium">
+                      <th class="py-2.5 px-3">Guest</th>
+                      <th class="py-2.5 px-3 text-center">Allowed</th>
+                      <th class="py-2.5 px-3 text-center">Mehendi</th>
+                      <th class="py-2.5 px-3 text-center">Sangeet</th>
+                      <th class="py-2.5 px-3 text-center">Wedding</th>
+                      <th class="py-2.5 px-3 text-center">Reception</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-borderWarm/60 text-textPrimary">
+                    <tr class="hover:bg-bone/40">
+                      <td class="py-2.5 px-3 font-medium">Ramesh &amp; Sunita Sharma</td>
+                      <td class="py-2.5 px-3 text-center text-textSecondary">4</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                    </tr>
+                    <tr class="hover:bg-bone/40">
+                      <td class="py-2.5 px-3 font-medium">Vikramaditya Singhania</td>
+                      <td class="py-2.5 px-3 text-center text-textSecondary">2</td>
+                      <td class="py-2.5 px-3 text-center text-[#C4B9AD]">—</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                    </tr>
+                    <tr class="hover:bg-bone/40">
+                      <td class="py-2.5 px-3 font-medium">Meenakshi Iyer (Chithi)</td>
+                      <td class="py-2.5 px-3 text-center text-textSecondary">3</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                    </tr>
+                    <tr class="hover:bg-bone/40">
+                      <td class="py-2.5 px-3 font-medium">Kabir Mehta &amp; Team (Office)</td>
+                      <td class="py-2.5 px-3 text-center text-textSecondary">6</td>
+                      <td class="py-2.5 px-3 text-center text-[#C4B9AD]">—</td>
+                      <td class="py-2.5 px-3 text-center text-[#C4B9AD]">—</td>
+                      <td class="py-2.5 px-3 text-center text-[#C4B9AD]">—</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                    </tr>
+                    <tr class="hover:bg-bone/40">
+                      <td class="py-2.5 px-3 font-medium">Pooja &amp; Aman Varma</td>
+                      <td class="py-2.5 px-3 text-center text-textSecondary">2</td>
+                      <td class="py-2.5 px-3 text-center text-[#C4B9AD]">—</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                    </tr>
+                    <tr class="hover:bg-bone/40">
+                      <td class="py-2.5 px-3 font-medium">Harpreet &amp; Jasleen Kaur</td>
+                      <td class="py-2.5 px-3 text-center text-textSecondary">2</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                      <td class="py-2.5 px-3 text-center text-accent font-semibold">✓</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDIBILITY BAND -->
+    <section class="border-y border-borderWarm py-12 px-6">
+      <div class="max-w-[1200px] mx-auto text-center">
+        <p class="body-default text-textSecondary font-normal max-w-3xl mx-auto">
+          Built for Indian weddings — multiple functions, long guest lists, and relatives who are never going to download an app.
+        </p>
+      </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section class="max-w-[1200px] mx-auto px-6 py-32 text-center">
+      <div class="max-w-[760px] mx-auto">
+        <h2 class="h2-title text-textPrimary mb-6">
+          Six functions. Four spreadsheets. One group chat nobody reads.
+        </h2>
+        <p class="body-default">
+          Someone’s keeping the guest list in Excel. Someone else has a different version. The caterer wants a number by Thursday and nobody can say what it is.
+        </p>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="max-w-[1200px] mx-auto px-6 pb-32">
+      <div class="mb-16">
+        <h2 class="h2-title text-textPrimary">
+          Three steps. About three minutes.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="bg-surface border-standard card-radius p-8 flex flex-col justify-between">
+          <div>
+            <div class="numeral text-[54px] leading-none mb-6">01</div>
+            <h3 class="text-[17px] font-bold text-textPrimary mb-3">Add your functions</h3>
+            <p class="body-default text-[15px]">
+              Mehendi, haldi, sangeet, the wedding, reception. Whatever you’re actually having.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-surface border-standard card-radius p-8 flex flex-col justify-between">
+          <div>
+            <div class="numeral text-[54px] leading-none mb-6">02</div>
+            <h3 class="text-[17px] font-bold text-textPrimary mb-3">Add your guests</h3>
+            <p class="body-default text-[15px]">
+              Tick which functions each one is invited to. The office comes to the reception. Your cousins come to everything.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-surface border-standard card-radius p-8 flex flex-col justify-between">
+          <div>
+            <div class="numeral text-[54px] leading-none mb-6">03</div>
+            <h3 class="text-[17px] font-bold text-textPrimary mb-3">Share one link</h3>
+            <p class="body-default text-[15px]">
+              Every guest gets their own. They open it, see what they’re invited to, and reply.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE FEATURE: CATERER NUMBERS (Text Left, Visual Right) -->
+    <section id="features" class="max-w-[1200px] mx-auto px-6 py-32 border-t border-borderWarm">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Text Left (5 cols) -->
+        <div class="lg:col-span-5">
+          <h2 class="h2-title text-textPrimary mb-6">
+            Know exactly how many are coming. To each function.
+          </h2>
+          <p class="body-default">
+            Your caterer doesn’t need a guest list, they need a number. As replies come in, you see confirmed heads for every function separately — because the people at your haldi aren’t the people at your reception.
+          </p>
+        </div>
+
+        <!-- Visual Right (7 cols) -->
+        <div class="lg:col-span-7">
+          <div class="bg-surface border-standard card-radius p-8 shadow-sm">
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-borderWarm">
+              <span class="font-serif text-[22px] text-textPrimary">Function Headcounts</span>
+              <span class="text-[13px] text-textSecondary">Updated 10m ago</span>
+            </div>
+
+            <div class="space-y-3 font-sans">
+              <!-- Header -->
+              <div class="grid grid-cols-12 text-[12px] uppercase tracking-wider text-textSecondary font-medium px-4 py-1">
+                <span class="col-span-5">Function</span>
+                <span class="col-span-2 text-right">Invited</span>
+                <span class="col-span-2 text-right">Replied</span>
+                <span class="col-span-3 text-right">Confirmed Heads</span>
+              </div>
+
+              <!-- Row 1: Haldi -->
+              <div class="grid grid-cols-12 items-center px-4 py-3.5 bg-bone/70 border-standard card-radius text-[15px]">
+                <div class="col-span-5 font-medium text-textPrimary flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-accent"></span>
+                  Haldi Ceremony
+                </div>
+                <div class="col-span-2 text-right text-textSecondary">64</div>
+                <div class="col-span-2 text-right text-textSecondary">58</div>
+                <div class="col-span-3 text-right font-serif text-[20px] text-accent font-semibold">54</div>
+              </div>
+
+              <!-- Row 2: Mehendi -->
+              <div class="grid grid-cols-12 items-center px-4 py-3.5 bg-bone/70 border-standard card-radius text-[15px]">
+                <div class="col-span-5 font-medium text-textPrimary flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-accent"></span>
+                  Mehendi Evening
+                </div>
+                <div class="col-span-2 text-right text-textSecondary">110</div>
+                <div class="col-span-2 text-right text-textSecondary">94</div>
+                <div class="col-span-3 text-right font-serif text-[20px] text-accent font-semibold">88</div>
+              </div>
+
+              <!-- Row 3: Sangeet -->
+              <div class="grid grid-cols-12 items-center px-4 py-3.5 bg-bone/70 border-standard card-radius text-[15px]">
+                <div class="col-span-5 font-medium text-textPrimary flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-accent"></span>
+                  Sangeet &amp; Cocktail
+                </div>
+                <div class="col-span-2 text-right text-textSecondary">220</div>
+                <div class="col-span-2 text-right text-textSecondary">185</div>
+                <div class="col-span-3 text-right font-serif text-[20px] text-accent font-semibold">172</div>
+              </div>
+
+              <!-- Row 4: Wedding -->
+              <div class="grid grid-cols-12 items-center px-4 py-3.5 bg-bone/70 border-standard card-radius text-[15px]">
+                <div class="col-span-5 font-medium text-textPrimary flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-accent"></span>
+                  Wedding Pheras
+                </div>
+                <div class="col-span-2 text-right text-textSecondary">180</div>
+                <div class="col-span-2 text-right text-textSecondary">162</div>
+                <div class="col-span-3 text-right font-serif text-[20px] text-accent font-semibold">158</div>
+              </div>
+
+              <!-- Row 5: Reception -->
+              <div class="grid grid-cols-12 items-center px-4 py-3.5 bg-bone/70 border-standard card-radius text-[15px]">
+                <div class="col-span-5 font-medium text-textPrimary flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-accent"></span>
+                  Grand Reception
+                </div>
+                <div class="col-span-2 text-right text-textSecondary">340</div>
+                <div class="col-span-2 text-right text-textSecondary">270</div>
+                <div class="col-span-3 text-right font-serif text-[20px] text-accent font-semibold">296</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GUEST EXPERIENCE: (Visual Left, Text Right) -->
+    <section class="max-w-[1200px] mx-auto px-6 py-32 border-t border-borderWarm">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Visual Left (7 cols - phone mockup) -->
+        <div class="lg:col-span-7 flex justify-center lg:justify-start">
+          <!-- PHONE MOCKUP -->
+          <div class="w-full max-w-[340px] bg-surface border-standard rounded-[28px] p-4 shadow-sm">
+            <!-- Phone Speaker Bar -->
+            <div class="w-20 h-1 bg-borderWarm rounded-full mx-auto mb-4"></div>
+            
+            <div class="bg-bone border-standard rounded-[20px] p-5">
+              <div class="text-center pb-4 mb-4 border-b border-borderWarm">
+                <span class="text-[11px] uppercase tracking-wider text-accent font-semibold">Personal Invitation</span>
+                <h4 class="font-serif text-[22px] text-textPrimary mt-1">Priya &amp; Arjun invite you</h4>
+                <p class="text-[12px] text-textSecondary mt-0.5">Please RSVP by November 15</p>
+              </div>
+
+              <div class="space-y-3 mb-6">
+                <!-- Function 1 -->
+                <div class="bg-white border-standard card-radius p-3 flex items-center justify-between">
+                  <div>
+                    <div class="font-medium text-[13px] text-textPrimary">Sangeet Night</div>
+                    <div class="text-[11px] text-textSecondary">Dec 12, 7:00 PM</div>
+                  </div>
+                  <div class="flex items-center gap-1 bg-bone p-1 rounded-md border border-borderWarm text-[11px]">
+                    <span class="px-2 py-0.5 rounded bg-accent text-white font-medium">Yes</span>
+                    <span class="px-2 py-0.5 text-textSecondary">No</span>
+                  </div>
+                </div>
+
+                <!-- Function 2 -->
+                <div class="bg-white border-standard card-radius p-3 flex items-center justify-between">
+                  <div>
+                    <div class="font-medium text-[13px] text-textPrimary">Wedding Pheras</div>
+                    <div class="text-[11px] text-textSecondary">Dec 13, 10:00 AM</div>
+                  </div>
+                  <div class="flex items-center gap-1 bg-bone p-1 rounded-md border border-borderWarm text-[11px]">
+                    <span class="px-2 py-0.5 rounded bg-accent text-white font-medium">Yes</span>
+                    <span class="px-2 py-0.5 text-textSecondary">No</span>
+                  </div>
+                </div>
+
+                <!-- Function 3 -->
+                <div class="bg-white border-standard card-radius p-3 flex items-center justify-between">
+                  <div>
+                    <div class="font-medium text-[13px] text-textPrimary">Grand Reception</div>
+                    <div class="text-[11px] text-textSecondary">Dec 13, 7:30 PM</div>
+                  </div>
+                  <div class="flex items-center gap-1 bg-bone p-1 rounded-md border border-borderWarm text-[11px]">
+                    <span class="px-2 py-0.5 rounded bg-accent text-white font-medium">Yes</span>
+                    <span class="px-2 py-0.5 text-textSecondary">No</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stepper -->
+              <div class="bg-white border-standard card-radius p-3 mb-5">
+                <div class="text-[12px] font-medium text-textPrimary mb-2 text-center">How many are coming?</div>
+                <div class="flex items-center justify-center gap-4">
+                  <button class="w-8 h-8 rounded-lg border border-borderWarm bg-bone text-textPrimary font-semibold text-[15px] flex items-center justify-center">-</button>
+                  <span class="font-serif text-[22px] text-textPrimary w-6 text-center">3</span>
+                  <button class="w-8 h-8 rounded-lg border border-borderWarm bg-bone text-textPrimary font-semibold text-[15px] flex items-center justify-center">+</button>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <div class="text-center">
+                <div class="w-full bg-accent text-bone py-2.5 rounded-lg text-[13px] font-medium">Confirm Attendance</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Right (5 cols) -->
+        <div class="lg:col-span-5">
+          <h2 class="h2-title text-textPrimary mb-6">
+            Your bua is not going to create an account.
+          </h2>
+          <p class="body-default">
+            And she doesn’t have to. Every guest gets a link. They tap it, see the functions they’re invited to, say yes or no, and tell you how many are coming. Any phone, no app, no password.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY (Full-bleed section with background #1F4D42) -->
+    <section class="border-y border-borderWarm py-32 bg-[#F6F2EC]">
+      <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+          <div class="lg:col-span-6">
+            <span class="label-caps mb-4 inline-block">SHARED PHOTO GALLERY</span>
+            <h2 class="h2-title text-textPrimary mb-6">
+              Every photo, from every function, in one place.
+            </h2>
+            <p class="body-default text-textSecondary">
+              Right now your wedding photos are on two hundred phones, in a group chat that compressed them into mush. Put a QR code on the tables. Guests scan it and upload straight from their camera roll.
+            </p>
+          </div>
+
+          <div class="lg:col-span-6 flex lg:justify-end">
+            <!-- Small QR Code Card -->
+            <div class="bg-surface text-textPrimary card-radius p-5 border-standard inline-flex items-center gap-5 shadow-sm">
+              <!-- Crisp clean vector QR code SVG -->
+              <svg class="w-20 h-20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Positioning markers -->
+                <rect x="5" y="5" width="26" height="26" stroke="#1A1613" stroke-width="4" fill="none"></rect>
+                <rect x="11" y="11" width="14" height="14" fill="#1A1613"></rect>
+                <rect x="69" y="5" width="26" height="26" stroke="#1A1613" stroke-width="4" fill="none"></rect>
+                <rect x="75" y="11" width="14" height="14" fill="#1A1613"></rect>
+                <rect x="5" y="69" width="26" height="26" stroke="#1A1613" stroke-width="4" fill="none"></rect>
+                <rect x="11" y="75" width="14" height="14" fill="#1A1613"></rect>
+                <!-- QR modules pattern -->
+                <rect x="37" y="9" width="6" height="6" fill="#1A1613"></rect>
+                <rect x="49" y="9" width="12" height="6" fill="#1A1613"></rect>
+                <rect x="37" y="21" width="12" height="6" fill="#1A1613"></rect>
+                <rect x="55" y="21" width="6" height="6" fill="#1A1613"></rect>
+                <rect x="9" y="37" width="6" height="12" fill="#1A1613"></rect>
+                <rect x="21" y="43" width="12" height="6" fill="#1A1613"></rect>
+                <rect x="39" y="39" width="8" height="8" fill="#1A1613"></rect>
+                <rect x="53" y="39" width="8" height="8" fill="#1A1613"></rect>
+                <rect x="69" y="37" width="12" height="6" fill="#1A1613"></rect>
+                <rect x="85" y="43" width="6" height="12" fill="#1A1613"></rect>
+                <rect x="37" y="55" width="6" height="12" fill="#1A1613"></rect>
+                <rect x="49" y="55" width="12" height="6" fill="#1A1613"></rect>
+                <rect x="37" y="73" width="12" height="6" fill="#1A1613"></rect>
+                <rect x="55" y="79" width="12" height="12" fill="#1A1613"></rect>
+                <rect x="73" y="69" width="8" height="8" fill="#1A1613"></rect>
+                <rect x="85" y="75" width="6" height="16" fill="#1A1613"></rect>
+              </svg>
+              <div>
+                <div class="text-[11px] uppercase tracking-wider text-accent font-semibold">Table QR Printout</div>
+                <div class="text-[15px] font-bold text-textPrimary mt-0.5">Scan to add photos</div>
+                <div class="text-[13px] text-textSecondary mt-0.5">No login required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo Grid Container -->
+        <div class="bg-surface p-6 lg:p-8 card-radius border-standard shadow-sm">
+          <!-- Album Tabs -->
+          <div class="flex items-center gap-2 mb-6 border-b border-borderWarm pb-4 overflow-x-auto">
+            <button class="px-4 py-2 rounded-lg bg-textPrimary text-bone text-[14px] font-medium">Mehendi (84)</button>
+            <button class="px-4 py-2 rounded-lg bg-bone hover:bg-bone/40 border-standard text-textSecondary text-[14px] font-medium transition-colors">Haldi (112)</button>
+            <button class="px-4 py-2 rounded-lg bg-bone hover:bg-bone/40 border-standard text-textSecondary text-[14px] font-medium transition-colors">Wedding (240)</button>
+            <button class="px-4 py-2 rounded-lg bg-bone hover:bg-bone/40 border-standard text-textSecondary text-[14px] font-medium transition-colors">Reception (318)</button>
+          </div>
+
+          <!-- Photo Cards Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="aspect-[4/3] rounded-lg bg-[#FAF7F2] border-standard flex flex-col items-center justify-center p-3 text-center hover:bg-bone/40 transition-colors">
+              <span class="text-[13px] font-mono text-textPrimary font-medium">IMG_2041.RAW</span>
+              <span class="text-[11px] text-textSecondary mt-1">Uploaded by Simran K.</span>
+            </div>
+            <div class="aspect-[4/3] rounded-lg bg-[#FAF7F2] border-standard flex flex-col items-center justify-center p-3 text-center hover:bg-bone/40 transition-colors">
+              <span class="text-[13px] font-mono text-textPrimary font-medium">IMG_2042.RAW</span>
+              <span class="text-[11px] text-textSecondary mt-1">Uploaded by Ankit R.</span>
+            </div>
+            <div class="aspect-[4/3] rounded-lg bg-[#FAF7F2] border-standard flex flex-col items-center justify-center p-3 text-center hover:bg-bone/40 transition-colors">
+              <span class="text-[13px] font-mono text-textPrimary font-medium">IMG_2043.RAW</span>
+              <span class="text-[11px] text-textSecondary mt-1">Uploaded by Chachi Ji</span>
+            </div>
+            <div class="aspect-[4/3] rounded-lg bg-[#FAF7F2] border-standard flex flex-col items-center justify-center p-3 text-center hover:bg-bone/40 transition-colors">
+              <span class="text-[13px] font-mono text-textPrimary font-medium">IMG_2044.RAW</span>
+              <span class="text-[11px] text-textSecondary mt-1">Uploaded by Rahul P.</span>
+            </div>
+            <div class="aspect-[4/3] rounded-lg bg-[#FAF7F2] border-standard flex flex-col items-center justify-center p-3 text-center hover:bg-bone/40 transition-colors">
+              <span class="text-[13px] font-mono text-textPrimary font-medium">IMG_2045.RAW</span>
+              <span class="text-[11px] text-textSecondary mt-1">Uploaded by Preeti M.</span>
+            </div>
+            <div class="aspect-[4/3] rounded-lg bg-[#FAF7F2] border-standard flex flex-col items-center justify-center p-3 text-center hover:bg-bone/40 transition-colors">
+              <span class="text-[13px] font-mono text-textPrimary font-medium">IMG_2046.RAW</span>
+              <span class="text-[11px] text-textSecondary mt-1">Uploaded by Karan S.</span>
+            </div>
+            <div class="aspect-[4/3] rounded-lg bg-[#FAF7F2] border-standard flex flex-col items-center justify-center p-3 text-center hover:bg-bone/40 transition-colors">
+              <span class="text-[13px] font-mono text-textPrimary font-medium">IMG_2047.RAW</span>
+              <span class="text-[11px] text-textSecondary mt-1">Uploaded by Rohit (Groom)</span>
+            </div>
+            <div class="aspect-[4/3] rounded-lg bg-[#FAF7F2] border-standard flex flex-col items-center justify-center p-3 text-center hover:bg-bone/40 transition-colors">
+              <span class="text-[13px] font-mono text-textPrimary font-medium">IMG_2048.RAW</span>
+              <span class="text-[11px] text-textSecondary mt-1">Uploaded by Vikram G.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVERYTHING ELSE (3 columns x 2 rows of cards, 1px border, no icons, no shadows) -->
+    <section class="max-w-[1200px] mx-auto px-6 py-32">
+      <div class="mb-16">
+        <h2 class="h2-title text-textPrimary">
+          And the rest of it.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1: Tasks -->
+        <div class="bg-surface border-standard card-radius p-8">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Tasks</h3>
+          <p class="body-default text-[15px]">
+            A shared checklist, so “who’s booking the pandit” has an answer.
+          </p>
+        </div>
+
+        <!-- Card 2: Expenses -->
+        <div class="bg-surface border-standard card-radius p-8">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Expenses</h3>
+          <p class="body-default text-[15px]">
+            Log what you spend as you spend it. Not a budgeting spreadsheet.
+          </p>
+        </div>
+
+        <!-- Card 3: Vendors -->
+        <div class="bg-surface border-standard card-radius p-8">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Vendors</h3>
+          <p class="body-default text-[15px]">
+            Photographer, caterer, decorator, pandit. Every number in one place.
+          </p>
+        </div>
+
+        <!-- Card 4: Wedding website -->
+        <div class="bg-surface border-standard card-radius p-8">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Wedding website</h3>
+          <p class="body-default text-[15px]">
+            Your schedule, venues and directions on a page you can share.
+          </p>
+        </div>
+
+        <!-- Card 5: Live stream -->
+        <div class="bg-surface border-standard card-radius p-8">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Live stream</h3>
+          <p class="body-default text-[15px]">
+            Paste a YouTube link. Relatives abroad can watch.
+          </p>
+        </div>
+
+        <!-- Card 6: Organizers -->
+        <div class="bg-surface border-standard card-radius p-8">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Organizers</h3>
+          <p class="body-default text-[15px]">
+            Add your parents, your sister, whoever’s helping.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING (Centered, max 680px, white card with 1px border, 64px padding) -->
+    <section id="early-access" class="max-w-[1200px] mx-auto px-6 pb-32">
+      <div class="max-w-[680px] mx-auto bg-surface border-standard card-radius p-16 text-center">
+        <h2 class="h2-title text-textPrimary mb-6">
+          Free while we’re in early access.
+        </h2>
+        <p class="body-default mb-8">
+          We’re new. Everything above is free right now — and anyone who plans a wedding with us during early access keeps it free through that wedding.
+        </p>
+        <div>
+          <a href="#" class="btn-primary">Start planning for free</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (Two columns of Q&A pairs, 1px rules between) -->
+    <section id="faq" class="max-w-[1200px] mx-auto px-6 py-32 border-t border-borderWarm">
+      <div class="mb-16">
+        <h2 class="h2-title text-textPrimary">
+          Questions
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+        <!-- Q1 -->
+        <div class="border-t border-borderWarm pt-6">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Do guests need to create an account?</h3>
+          <p class="body-default text-[15px]">
+            No. Never. They get a link, they open it, they reply.
+          </p>
+        </div>
+
+        <!-- Q2 -->
+        <div class="border-t border-borderWarm pt-6">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Can my family help manage it?</h3>
+          <p class="body-default text-[15px]">
+            Yes. Everyone sees the same guest list, tasks and expenses.
+          </p>
+        </div>
+
+        <!-- Q3 -->
+        <div class="border-t border-borderWarm pt-6">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Who can see our photos?</h3>
+          <p class="body-default text-[15px]">
+            Only people with the gallery link. It isn’t listed anywhere or indexed by search engines.
+          </p>
+        </div>
+
+        <!-- Q4 -->
+        <div class="border-t border-borderWarm pt-6">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">We haven’t fixed the date yet.</h3>
+          <p class="body-default text-[15px]">
+            That’s fine. Add your functions now and fill in dates later.
+          </p>
+        </div>
+
+        <!-- Q5 -->
+        <div class="border-t border-borderWarm pt-6">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">Is this for wedding planners?</h3>
+          <p class="body-default text-[15px]">
+            No. It’s built for one wedding — yours.
+          </p>
+        </div>
+
+        <!-- Q6 -->
+        <div class="border-t border-borderWarm pt-6">
+          <h3 class="text-[17px] font-bold text-textPrimary mb-3">What happens to our data afterwards?</h3>
+          <p class="body-default text-[15px]">
+            It stays. Download everything or delete all of it, whenever you want.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA (Centered, 160px vertical padding) -->
+    <section class="max-w-[1200px] mx-auto px-6 text-center" style="padding-top: 160px; padding-bottom: 160px;">
+      <h2 class="h2-title text-textPrimary mb-4">
+        Start with your first function.
+      </h2>
+      <p class="body-default mb-8">
+        Takes about three minutes. Free while we’re in early access.
+      </p>
+      <div>
+        <a href="#early-access" class="btn-primary">Start planning for free</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (background #1A1613, text #FAF7F2, 64px padding) -->
+  <footer class="bg-textPrimary text-bone" style="padding: 64px 24px;">
+    <div class="max-w-[1200px] mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-start gap-12 pb-12">
+        <!-- Left Column -->
+        <div>
+          <div class="inline-block p-1 rounded-lg bg-bone"><img src="https://lh3.googleusercontent.com/aida/AEtjO1VT-Ot5yYU8j-UKegYykwud_cAz-Q4xchLbSPlYcLen_nXVNHiB6QKuCC_vwmZEKa1lAZKNdJj3R7TuaArZt-QGyo1z_wWsWmpUkybq9vHh9o6mnfoU3wz6NmeoHOPBHTYukO4bdGU2Wmncft_maXFTeUqIuvk-Oz8UqUGAWN7rx04ejlgtOaTGvCOpD2betTF44uhgyJEJPhUvCSlA_qoBfinGaGKNZ_4uN6Xo2xkrZrfV9T1TMWe1fYmD" alt="MakeMyMarriage" class="h-8 w-auto object-contain"></div>
+          <div class="text-[15px] text-[#C4B9AD] mt-2">Every function. Every guest. One place.</div>
+        </div>
+
+        <!-- Right Columns: Product & Legal -->
+        <div class="flex items-start gap-16">
+          <div>
+            <div class="text-[13px] uppercase tracking-wider text-accent font-semibold mb-3">Product</div>
+            <ul class="space-y-2 text-[15px] text-[#C4B9AD]">
+              <li class=""><a href="#how-it-works" class="hover:text-bone transition-colors">How it works</a></li>
+              <li class=""><a href="#features" class="hover:text-bone transition-colors">Features</a></li>
+              <li class=""><a href="#faq" class="hover:text-bone transition-colors">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-[13px] uppercase tracking-wider text-accent font-semibold mb-3">Legal</div>
+            <ul class="space-y-2 text-[15px] text-[#C4B9AD]">
+              <li class=""><a href="#" class="hover:text-bone transition-colors">Privacy</a></li>
+              <li class=""><a href="#" class="hover:text-bone transition-colors">Terms</a></li>
+              <li class=""><a href="#" class="hover:text-bone transition-colors">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Rule and Copyright -->
+      <div class="border-t border-[#38312B] pt-8 flex items-center justify-between">
+        <span class="text-[13px] text-[#A69B90]">© 2026 MakeMyMarriage</span>
+      </div>
+    </div>
+  </footer>
+
+
+
+
+
+
+
+</body></html>

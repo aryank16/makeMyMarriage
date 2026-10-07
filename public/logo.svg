@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80" fill="none">
+  <!-- Clean geometric mark: Interlocking geometric M motifs representing union & celebration with software precision -->
+  <g transform="translate(10, 12)">
+    <!-- Base background container subtle rounded badge or clean standalone mark -->
+    <rect width="56" height="56" rx="14" fill="#FAF7F2" stroke="#E4DCD1" stroke-width="1.5"/>
+    <!-- Interlocking architectural M / arch loops in terracotta #A1472F and dark #1A1613 -->
+    <path d="M16 41V22C16 17.5 19.5 15 23.5 15C27 15 29.5 17.2 30.5 20C31.5 17.2 34 15 37.5 15C41.5 15 45 17.5 45 22V41" stroke="#A1472F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M22 41V27C22 24.5 23.8 23 26 23C28.2 23 30 24.5 30 27V41" stroke="#1A1613" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M31 41V27C31 24.5 32.8 23 35 23C37.2 23 39 24.5 39 27V41" stroke="#1A1613" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Subtle knot/union pin dot in terracotta -->
+    <circle cx="30.5" cy="18" r="2.5" fill="#A1472F"/>
+  </g>
+
+  <!-- Typography: MakeMyMarriage in editorial serif styling matching Instrument Serif tone -->
+  <text x="82" y="47" font-family="'Instrument Serif', Georgia, serif" font-size="28" font-weight="400" fill="#1A1613" letter-spacing="-0.02em">MakeMyMarriage</text>
+</svg>
