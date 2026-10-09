@@ -1,26 +1,208 @@
 @import "tailwindcss";
 
+/* MakeMyMarriage design tokens.
+ *
+ * These are the agreed brand values and they are load-bearing: the product has
+ * to read as serious software, not as a wedding invitation. Do not introduce
+ * pink/red/magenta, gradients, gold fills or script faces. The palette is
+ * light-only by design — there is no dark variant, so no prefers-color-scheme
+ * block here. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bone: #faf7f2; /* page background */
+  --bone-deep: #f4efe8; /* sidebars, inset panels */
+  --surface: #ffffff;
+  --ink: #1a1613;
+  --ink-muted: #6b625a;
+  --ink-faint: #a39b92; /* placeholders only */
+  --accent: #a1472f; /* deep terracotta */
+  --accent-hover: #8a3b26;
+  --emerald: #1f4d42; /* deep contrast, used sparingly */
+  --line: #e4dcd1;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-bone: var(--bone);
+  --color-bone-deep: var(--bone-deep);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-emerald: var(--emerald);
+  --color-line: var(--line);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--bone);
+  --color-foreground: var(--ink);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-instrument-serif);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bone);
+  color: var(--ink);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Form primitives, lifted verbatim from the approved design so that every
+ * auth surface stays identical without each page restating the values. */
+.input-field {
+  width: 100%;
+  height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background-color: var(--surface);
+  padding: 0 14px;
+  font-size: 16px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.input-field:focus {
+  border-color: var(--accent);
+}
+
+.input-field::placeholder {
+  color: var(--ink-faint);
+}
+
+.input-field:disabled {
+  opacity: 0.6;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--accent);
+  color: var(--surface);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+/* Form submits fill their column and match .input-field's height so the two
+ * line up. Marketing CTAs use .btn-primary on its own. */
+.btn-block {
+  display: flex;
+  width: 100%;
+  height: 52px;
+  padding: 0;
+  font-size: 16px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  display: flex;
+  width: 100%;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background-color: var(--surface);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bone);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Marketing typography. The serif is reserved for display sizes; body copy and
+ * anything functional stays in Inter. */
+.h1-title {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-size: 68px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+
+.h2-title {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-size: 44px;
+  line-height: 1.15;
+  font-weight: 400;
+}
+
+.h3-title {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.numeral {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.body-large {
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--ink-muted);
+}
+
+.body-default {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-muted);
+}
+
+.label-caps {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.border-standard {
+  border: 1px solid var(--line);
+}
+
+.card-radius {
+  border-radius: 10px;
+}
+
+/* The 68px/44px display sizes are set for desktop; they have to come down on a
+ * phone or the hero overflows. */
+@media (max-width: 640px) {
+  .h1-title {
+    font-size: 40px;
+  }
+
+  .h2-title {
+    font-size: 30px;
+  }
+
+  .body-large {
+    font-size: 17px;
+  }
 }

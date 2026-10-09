@@ -1,0 +1,434 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeMyMarriage — Command Centre Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            appBg: '#FAF7F2',
+            sidebarBg: '#F4EFE8',
+            surface: '#FFFFFF',
+            textPrimary: '#1A1613',
+            textSecondary: '#6B625A',
+            accent: '#A1472F',
+            deepContrast: '#1F4D42',
+            divider: '#E4DCD1'
+          },
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FAF7F2;
+      color: #1A1613;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif-display {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-feature-settings: "tnum" 1;
+    }
+    .tabular-numbers {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#FAF7F2] text-[#1A1613] flex">
+
+  <!-- LEFT SIDEBAR (Fixed 260px wide, full height) -->
+  <aside class="w-[260px] flex-shrink-0 bg-[#F4EFE8] border-r border-[#E4DCD1] min-h-screen flex flex-col justify-between select-none">
+    <div>
+      <!-- Brand & Wedding Context Block -->
+      <div class="px-6 pt-7 pb-6 border-b border-[#E4DCD1]">
+        <div class="flex items-center gap-2.5 mb-5">
+          <div class="w-6 h-6 flex-shrink-0">
+            <svg viewBox="0 0 40 40" fill="none" class="w-full h-full">
+              <path d="M6 32V8L20 22L34 8V32" stroke="#A1472F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M13 32V18L20 25L27 18V32" stroke="#1A1613" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <span class="font-serif-display text-[19px] leading-tight text-[#1A1613] tracking-tight">MakeMyMarriage</span>
+        </div>
+        
+        <div class="bg-[#FAF7F2] border border-[#E4DCD1] rounded-lg p-3">
+          <div class="text-[15px] font-semibold text-[#1A1613] leading-snug">Priya &amp; Arjun</div>
+          <div class="text-[13px] text-[#6B625A] mt-0.5">20 November 2026 · Jaipur</div>
+        </div>
+      </div>
+
+      <!-- Navigation List (40px row height) -->
+      <nav class="p-3 space-y-1">
+        <!-- Dashboard (Active) -->
+        <a href="#dashboard" class="relative flex items-center h-[40px] px-3 rounded-[8px] bg-white text-[#1A1613] font-medium text-[15px] shadow-[0_1px_2px_rgba(0,0,0,0.03)] border border-[#E4DCD1]/60">
+          <span class="absolute left-0 top-1.5 bottom-1.5 w-[3px] bg-[#A1472F] rounded-r-full"></span>
+          <svg class="w-4 h-4 mr-2.5 text-[#1A1613]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+          </svg>
+          Dashboard
+        </a>
+
+        <!-- Events -->
+        <a href="#events" class="flex items-center h-[40px] px-3 rounded-[8px] text-[#6B625A] hover:text-[#1A1613] hover:bg-[#FAF7F2] transition-colors text-[15px]">
+          <svg class="w-4 h-4 mr-2.5 text-[#6B625A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Events
+        </a>
+
+        <!-- Tasks -->
+        <a href="#tasks" class="flex items-center h-[40px] px-3 rounded-[8px] text-[#6B625A] hover:text-[#1A1613] hover:bg-[#FAF7F2] transition-colors text-[15px]">
+          <svg class="w-4 h-4 mr-2.5 text-[#6B625A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          Tasks
+        </a>
+
+        <!-- Guests -->
+        <a href="#guests" class="flex items-center h-[40px] px-3 rounded-[8px] text-[#6B625A] hover:text-[#1A1613] hover:bg-[#FAF7F2] transition-colors text-[15px]">
+          <svg class="w-4 h-4 mr-2.5 text-[#6B625A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          Guests
+        </a>
+
+        <!-- Expenses -->
+        <a href="#expenses" class="flex items-center h-[40px] px-3 rounded-[8px] text-[#6B625A] hover:text-[#1A1613] hover:bg-[#FAF7F2] transition-colors text-[15px]">
+          <svg class="w-4 h-4 mr-2.5 text-[#6B625A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+          Expenses
+        </a>
+
+        <!-- Vendors -->
+        <a href="#vendors" class="flex items-center h-[40px] px-3 rounded-[8px] text-[#6B625A] hover:text-[#1A1613] hover:bg-[#FAF7F2] transition-colors text-[15px]">
+          <svg class="w-4 h-4 mr-2.5 text-[#6B625A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          Vendors
+        </a>
+
+        <!-- Website -->
+        <a href="#website" class="flex items-center h-[40px] px-3 rounded-[8px] text-[#6B625A] hover:text-[#1A1613] hover:bg-[#FAF7F2] transition-colors text-[15px]">
+          <svg class="w-4 h-4 mr-2.5 text-[#6B625A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          Website
+        </a>
+
+        <!-- Gallery -->
+        <a href="#gallery" class="flex items-center h-[40px] px-3 rounded-[8px] text-[#6B625A] hover:text-[#1A1613] hover:bg-[#FAF7F2] transition-colors text-[15px]">
+          <svg class="w-4 h-4 mr-2.5 text-[#6B625A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          Gallery
+        </a>
+
+        <!-- Settings -->
+        <a href="#settings" class="flex items-center h-[40px] px-3 rounded-[8px] text-[#6B625A] hover:text-[#1A1613] hover:bg-[#FAF7F2] transition-colors text-[15px]">
+          <svg class="w-4 h-4 mr-2.5 text-[#6B625A]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          Settings
+        </a>
+      </nav>
+    </div>
+
+    <!-- Bottom Sidebar User Block -->
+    <div class="p-4 border-t border-[#E4DCD1]">
+      <div class="flex items-center gap-3 px-2 py-1">
+        <div class="w-8 h-8 rounded-full bg-[#E4DCD1] text-[#1A1613] font-semibold text-[14px] flex items-center justify-center flex-shrink-0">
+          P
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="text-[14px] font-semibold text-[#1A1613] truncate">Priya Sharma</div>
+          <div class="text-[12px] text-[#6B625A]">Admin</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT AREA (40px padding, 24px gap between cards) -->
+  <main class="flex-1 min-w-0 p-10 max-w-[1180px]">
+    
+    <!-- TOP ROW -->
+    <header class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="font-serif-display text-[32px] text-[#1A1613] leading-none">Dashboard</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <button type="button" class="h-10 px-4 rounded-[6px] border border-[#E4DCD1] bg-white text-[#1A1613] text-[14px] font-medium hover:bg-[#FAF7F2] transition-colors">
+          Share invitation link
+        </button>
+        <button type="button" class="h-10 px-5 rounded-[6px] bg-[#A1472F] text-white text-[14px] font-medium hover:bg-[#8D3B26] transition-colors">
+          Add guests
+        </button>
+      </div>
+    </header>
+
+    <!-- COUNTDOWN CARD (full width, background #1F4D42, all text #FAF7F2, 10px radius, 32px padding) -->
+    <section class="bg-[#1F4D42] text-[#FAF7F2] rounded-[10px] p-8 mb-6 flex items-center justify-between">
+      <!-- Left: 64px display countdown -->
+      <div class="flex items-baseline gap-4">
+        <span class="font-serif-display text-[64px] leading-none text-[#FAF7F2] font-normal">42</span>
+        <span class="text-[17px] text-[#FAF7F2]/80 font-normal">days to the wedding</span>
+      </div>
+
+      <!-- Right: Stacked event milestones -->
+      <div class="text-right space-y-1 text-[15px] text-[#FAF7F2]/90 font-normal">
+        <div class="">Mehendi in 40 days</div>
+        <div class="">Sangeet in 41 days</div>
+        <div class="">Reception in 43 days</div>
+      </div>
+    </section>
+
+    <!-- STAT ROW (four equal cards in a row) -->
+    <section class="grid grid-cols-4 gap-6 mb-6">
+      <!-- Card 1 -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6">
+        <div class="text-[12px] uppercase tracking-[0.08em] font-medium text-[#6B625A] mb-2">INVITED</div>
+        <div class="font-serif-display text-[40px] leading-tight text-[#1A1613] tabular-numbers mb-1">284</div>
+        <div class="text-[13px] text-[#6B625A]">households invited</div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6">
+        <div class="text-[12px] uppercase tracking-[0.08em] font-medium text-[#6B625A] mb-2">REPLIED</div>
+        <div class="font-serif-display text-[40px] leading-tight text-[#1A1613] tabular-numbers mb-1">196</div>
+        <div class="text-[13px] text-[#6B625A]">69% have responded</div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6">
+        <div class="text-[12px] uppercase tracking-[0.08em] font-medium text-[#6B625A] mb-2">ATTENDING</div>
+        <div class="font-serif-display text-[40px] leading-tight text-[#1A1613] tabular-numbers mb-1">412</div>
+        <div class="text-[13px] text-[#6B625A]">total heads expected</div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6">
+        <div class="text-[12px] uppercase tracking-[0.08em] font-medium text-[#6B625A] mb-2">AWAITING</div>
+        <div class="font-serif-display text-[40px] leading-tight text-[#1A1613] tabular-numbers mb-1">88</div>
+        <div class="text-[13px] text-[#6B625A]">yet to reply</div>
+      </div>
+    </section>
+
+    <!-- MAIN TWO-COLUMN GRID (left column 62%, right column 38%) -->
+    <div class="grid grid-cols-12 gap-6 mb-6">
+      
+      <!-- LEFT COLUMN (62% ~ col-span-7 or ~ col-span-7 / 5) -->
+      <!-- Precise width: using flex or percentage grid styling for true 62% / 38% ratio -->
+      <div class="col-span-12 lg:col-span-7 xl:col-span-7 flex flex-col gap-6">
+        
+        <!-- "Your functions" card -->
+        <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <h2 class="text-[17px] font-semibold text-[#1A1613]">Your functions</h2>
+              <a href="#events" class="text-[13px] font-medium text-[#A1472F] hover:underline">Manage</a>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-[15px]">
+                <thead>
+                  <tr class="text-[12px] uppercase tracking-[0.08em] font-medium text-[#6B625A] border-b border-[#E4DCD1] pb-3">
+                    <th class="pb-3 font-medium">Function</th>
+                    <th class="pb-3 font-medium">Date</th>
+                    <th class="pb-3 font-medium">Venue</th>
+                    <th class="pb-3 font-medium text-right pr-6">Invited</th>
+                    <th class="pb-3 font-medium text-right text-[#1A1613]">Attending</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[#E4DCD1]">
+                  <!-- Row 1: Mehendi -->
+                  <tr class="hover:bg-[#FAF7F2]/50 transition-colors">
+                    <td class="py-3.5 font-medium text-[#1A1613]">Mehendi</td>
+                    <td class="py-3.5 text-[#6B625A]">18 Nov, 4:00 PM</td>
+                    <td class="py-3.5 text-[#6B625A]">Sharma Residence</td>
+                    <td class="py-3.5 text-right pr-6 text-[#6B625A] tabular-numbers">96</td>
+                    <td class="py-3.5 text-right font-semibold text-[#1A1613] tabular-numbers">128</td>
+                  </tr>
+                  <!-- Row 2: Haldi -->
+                  <tr class="hover:bg-[#FAF7F2]/50 transition-colors">
+                    <td class="py-3.5 font-medium text-[#1A1613]">Haldi</td>
+                    <td class="py-3.5 text-[#6B625A]">19 Nov, 11:00 AM</td>
+                    <td class="py-3.5 text-[#6B625A]">Sharma Residence</td>
+                    <td class="py-3.5 text-right pr-6 text-[#6B625A] tabular-numbers">64</td>
+                    <td class="py-3.5 text-right font-semibold text-[#1A1613] tabular-numbers">88</td>
+                  </tr>
+                  <!-- Row 3: Sangeet -->
+                  <tr class="hover:bg-[#FAF7F2]/50 transition-colors">
+                    <td class="py-3.5 font-medium text-[#1A1613]">Sangeet</td>
+                    <td class="py-3.5 text-[#6B625A]">19 Nov, 7:00 PM</td>
+                    <td class="py-3.5 text-[#6B625A]">Hotel Clarks Amer</td>
+                    <td class="py-3.5 text-right pr-6 text-[#6B625A] tabular-numbers">180</td>
+                    <td class="py-3.5 text-right font-semibold text-[#1A1613] tabular-numbers">243</td>
+                  </tr>
+                  <!-- Row 4: Wedding -->
+                  <tr class="hover:bg-[#FAF7F2]/50 transition-colors">
+                    <td class="py-3.5 font-medium text-[#1A1613]">Wedding</td>
+                    <td class="py-3.5 text-[#6B625A]">20 Nov, 8:00 PM</td>
+                    <td class="py-3.5 text-[#6B625A]">Narain Niwas Palace</td>
+                    <td class="py-3.5 text-right pr-6 text-[#6B625A] tabular-numbers">284</td>
+                    <td class="py-3.5 text-right font-semibold text-[#1A1613] tabular-numbers">412</td>
+                  </tr>
+                  <!-- Row 5: Reception -->
+                  <tr class="hover:bg-[#FAF7F2]/50 transition-colors">
+                    <td class="py-3.5 font-medium text-[#1A1613]">Reception</td>
+                    <td class="py-3.5 text-[#6B625A]">21 Nov, 7:00 PM</td>
+                    <td class="py-3.5 text-[#6B625A]">Hotel Clarks Amer</td>
+                    <td class="py-3.5 text-right pr-6 text-[#6B625A] tabular-numbers">210</td>
+                    <td class="py-3.5 text-right font-semibold text-[#1A1613] tabular-numbers">288</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="mt-4 pt-3 border-t border-[#E4DCD1] text-[13px] text-[#6B625A] flex justify-between items-center">
+            <span class="">Overall RSVP participation is at 69% across all 5 events</span>
+            <span class="text-[#1A1613] font-medium">Jaipur ceremonies</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN (38%) -->
+      <div class="col-span-12 lg:col-span-5 xl:col-span-5 flex flex-col gap-6">
+        
+        <!-- Card A: Upcoming tasks -->
+        <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6"><div class="flex items-center justify-between mb-4"><h2 class="text-[17px] font-semibold text-[#1A1613]">Upcoming tasks</h2><a href="#tasks" class="text-[13px] font-medium text-[#A1472F] hover:underline flex-shrink-0 ml-2">View all</a></div><div><div class="flex items-center justify-between gap-4 py-3.5 border-b border-[#E4DCD1]"><div class="min-w-0 flex-1"><div class="text-[15px] font-medium text-[#1A1613] leading-snug truncate">Confirm catering menu and head count</div><div class="text-[13px] text-[#6B625A] mt-0.5">Due 25 Oct</div></div><div class="flex items-center gap-2 flex-shrink-0"><div class="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#E4DCD1] text-[11px] font-medium text-[#1A1613] flex items-center justify-center flex-shrink-0">P</div><span class="px-2.5 py-0.5 rounded-full text-[12px] font-medium border border-[#6B625A]/40 text-[#6B625A] bg-[#FAF7F2]">In progress</span></div></div><div class="flex items-center justify-between gap-4 py-3.5 border-b border-[#E4DCD1]"><div class="min-w-0 flex-1"><div class="text-[15px] font-medium text-[#1A1613] leading-snug truncate">Finalise and print invitations</div><div class="text-[13px] text-[#6B625A] mt-0.5">Due 28 Oct</div></div><div class="flex items-center gap-2 flex-shrink-0"><div class="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#E4DCD1] text-[11px] font-medium text-[#1A1613] flex items-center justify-center flex-shrink-0">A</div><span class="px-2.5 py-0.5 rounded-full text-[12px] font-medium border border-[#E4DCD1] text-[#6B625A] bg-white">To do</span></div></div><div class="flex items-center justify-between gap-4 py-3.5 border-b border-[#E4DCD1]"><div class="min-w-0 flex-1"><div class="text-[15px] font-medium text-[#1A1613] leading-snug truncate">Confirm pandit and muhurat timings</div><div class="text-[13px] text-[#6B625A] mt-0.5">Due 5 Nov</div></div><div class="flex items-center gap-2 flex-shrink-0"><div class="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#E4DCD1] text-[11px] font-medium text-[#1A1613] flex items-center justify-center flex-shrink-0">P</div><span class="px-2.5 py-0.5 rounded-full text-[12px] font-medium border border-[#E4DCD1] text-[#6B625A] bg-white">To do</span></div></div><div class="flex items-center justify-between gap-4 py-3.5"><div class="min-w-0 flex-1"><div class="text-[15px] font-medium text-[#1A1613] leading-snug truncate">Share schedule with all vendors</div><div class="text-[13px] text-[#6B625A] mt-0.5">Due 13 Nov</div></div><div class="flex items-center gap-2 flex-shrink-0"><div class="w-6 h-6 rounded-full bg-[#FAF7F2] border border-[#E4DCD1] text-[11px] font-medium text-[#1A1613] flex items-center justify-center flex-shrink-0">A</div><span class="px-2.5 py-0.5 rounded-full text-[12px] font-medium border border-[#E4DCD1] text-[#6B625A] bg-white">To do</span></div></div></div></div>
+
+        <!-- Card B: Recent expenses -->
+        <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6"><div class="flex items-center justify-between mb-4"><h2 class="text-[17px] font-semibold text-[#1A1613]">Recent expenses</h2><a href="#expenses" class="text-[13px] font-medium text-[#A1472F] hover:underline flex-shrink-0 ml-2">View all</a></div><div class="space-y-3.5"><div class="flex items-center justify-between text-[15px] gap-3"><span class="text-[#6B625A] truncate">Narain Niwas Palace — advance</span><span class="font-semibold text-[#1A1613] tabular-numbers flex-shrink-0">₹6,20,000</span></div><div class="flex items-center justify-between text-[15px] gap-3"><span class="text-[#6B625A] truncate">Rajasthani Rasoi Caterers — advance</span><span class="font-semibold text-[#1A1613] tabular-numbers flex-shrink-0">₹1,50,000</span></div><div class="flex items-center justify-between text-[15px] gap-3"><span class="text-[#6B625A] truncate">Studio Kiran — photography advance</span><span class="font-semibold text-[#1A1613] tabular-numbers flex-shrink-0">₹1,00,000</span></div></div><div class="mt-4 pt-4 border-t border-[#E4DCD1] flex items-baseline justify-between"><span class="text-[15px] font-medium text-[#6B625A]">Total recorded</span><span class="font-serif-display text-[20px] text-[#1A1613] tabular-numbers font-normal">₹14,20,000</span></div></div>
+
+      </div>
+
+    </div>
+
+    <!-- BOTTOM ROW (three equal cards) -->
+    <section class="grid grid-cols-3 gap-6">
+      
+      <!-- Card 1: Share your invitation -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6 flex flex-col justify-between">
+        <div>
+          <h2 class="text-[17px] font-semibold text-[#1A1613] mb-1">Share your invitation</h2>
+          <p class="text-[13px] text-[#6B625A] mb-4">Every guest gets their own link. No account needed.</p>
+        </div>
+
+        <div class="relative flex items-center">
+          <input type="text" readonly="" value="makemymarriage.com/i/priya-arjun" class="w-full h-10 pl-3 pr-16 bg-[#FAF7F2] border border-[#E4DCD1] rounded-[6px] text-[13px] text-[#1A1613] font-normal focus:outline-none select-all">
+          <button type="button" class="absolute right-1.5 h-7 px-2.5 rounded-[4px] bg-white border border-[#E4DCD1] text-[12px] font-medium text-[#1A1613] hover:bg-[#FAF7F2] transition-colors" onclick="navigator.clipboard.writeText('makemymarriage.com/i/priya-arjun')">
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 2: Photo gallery -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6 flex flex-col justify-between">
+        <div>
+          <h2 class="text-[17px] font-semibold text-[#1A1613] mb-1">Photo gallery</h2>
+          <p class="text-[13px] text-[#6B625A] mb-3">Print this QR and put it on the tables.</p>
+        </div>
+
+        <div class="flex items-center gap-4 pt-1">
+          <!-- Small black-and-white QR code graphic -->
+          <div class="w-12 h-12 bg-white border border-[#E4DCD1] p-1 rounded-[4px] flex-shrink-0 flex items-center justify-center">
+            <svg viewBox="0 0 33 33" class="w-full h-full" fill="#1A1613">
+              <!-- Crisp clean vector QR code pattern -->
+              <rect x="0" y="0" width="11" height="11" fill="#1A1613"></rect>
+              <rect x="2" y="2" width="7" height="7" fill="#FFFFFF"></rect>
+              <rect x="4" y="4" width="3" height="3" fill="#1A1613"></rect>
+              
+              <rect x="22" y="0" width="11" height="11" fill="#1A1613"></rect>
+              <rect x="24" y="2" width="7" height="7" fill="#FFFFFF"></rect>
+              <rect x="26" y="4" width="3" height="3" fill="#1A1613"></rect>
+              
+              <rect x="0" y="22" width="11" height="11" fill="#1A1613"></rect>
+              <rect x="2" y="24" width="7" height="7" fill="#FFFFFF"></rect>
+              <rect x="4" y="26" width="3" height="3" fill="#1A1613"></rect>
+              
+              <rect x="14" y="2" width="3" height="7"></rect>
+              <rect x="14" y="14" width="5" height="5"></rect>
+              <rect x="2" y="14" width="5" height="5"></rect>
+              <rect x="22" y="14" width="4" height="3"></rect>
+              <rect x="27" y="18" width="4" height="5"></rect>
+              <rect x="14" y="24" width="5" height="4"></rect>
+              <rect x="22" y="24" width="5" height="6"></rect>
+            </svg>
+          </div>
+          <div>
+            <a href="#download-qr" class="text-[13px] font-medium text-[#A1472F] hover:underline flex items-center gap-1">
+              Download QR
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </a>
+            <div class="text-[11px] text-[#6B625A] mt-0.5">High-resolution SVG / PDF</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Wedding website -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6 flex flex-col justify-between">
+        <div>
+          <h2 class="text-[17px] font-semibold text-[#1A1613] mb-1">Wedding website</h2>
+          <p class="text-[13px] text-[#6B625A] mb-4">Published · 3 functions shown</p>
+        </div>
+
+        <div class="flex items-center gap-4 pt-1">
+          <a href="https://makemymarriage.com/i/priya-arjun" target="_blank" class="text-[13px] font-medium text-[#A1472F] hover:underline flex items-center gap-1">
+            View site
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+          <a href="#edit-website" class="text-[13px] font-medium text-[#6B625A] hover:text-[#1A1613] hover:underline">
+            Edit
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+
+
+</body></html>

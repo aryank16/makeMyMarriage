@@ -1,72 +1,62 @@
-'use client';
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { safeNext } from '@/lib/auth/safe-next';
+import { authErrorMessage } from '@/lib/auth/auth-messages';
+import LoginForm from './login-form';
+import WeddingPreview from './wedding-preview';
 
-import { useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
+export const metadata: Metadata = {
+  title: 'Log in · MakeMyMarriage',
+};
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-  const [message, setMessage] = useState('');
+export default async function LoginPage(props: PageProps<'/login'>) {
+  const searchParams = await props.searchParams;
+  const next = safeNext(searchParams.next);
+  const callbackError = authErrorMessage(searchParams.error);
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus('sending');
-    const supabase = createClient();
-    const next = new URLSearchParams(window.location.search).get('next') ?? '/dashboard';
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
-      },
-    });
-    if (error) {
-      setStatus('error');
-      setMessage(error.message);
-    } else {
-      setStatus('sent');
-    }
-  }
+  /* Read on the server, at request time. A NEXT_PUBLIC_ variable would be
+   * inlined into the client bundle at build time and the whole OAuth branch
+   * dead-code eliminated, so flipping it on a deployed app would silently do
+   * nothing until the next rebuild. */
+  const googleEnabled = process.env.GOOGLE_AUTH_ENABLED === 'true';
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6">
-      <h1 className="text-2xl font-semibold tracking-tight">MakeMyMarriage</h1>
-      <p className="mt-2 text-sm text-neutral-500">
-        Sign in to plan your wedding.
-      </p>
+    <main className="min-h-screen flex">
+      <div className="w-full lg:w-[45%] min-h-screen bg-bone flex flex-col justify-between p-6 sm:p-12 lg:border-r lg:border-line">
+        <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-2.5 no-underline">
+            <Image
+              src="/logo.svg"
+              alt="MakeMyMarriage"
+              width={320}
+              height={80}
+              priority
+              className="h-8 w-auto"
+            />
+          </Link>
+        </div>
 
-      {status === 'sent' ? (
-        <div className="mt-8 rounded-lg border border-neutral-200 p-4 text-sm dark:border-neutral-800">
-          <p className="font-medium">Check your email</p>
-          <p className="mt-1 text-neutral-500">
-            We sent a sign-in link to {email}. It expires in an hour.
+        {callbackError && (
+          <div
+            role="alert"
+            className="w-full max-w-[400px] mx-auto rounded-[10px] border border-line bg-surface px-4 py-3 text-[14px] leading-[1.5] text-ink"
+          >
+            {callbackError}
+          </div>
+        )}
+
+        <LoginForm next={next} googleEnabled={googleEnabled} />
+
+        <div className="w-full max-w-[400px] mx-auto pt-6 border-t border-line">
+          <p className="text-[14px] leading-[1.6] text-ink-muted">
+            Invited as a guest? You don&apos;t need an account — just open the
+            invitation link you were sent.
           </p>
         </div>
-      ) : (
-        <form onSubmit={onSubmit} className="mt-8 space-y-3">
-          <label htmlFor="email" className="block text-sm font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:focus:border-neutral-100"
-          />
-          <button
-            type="submit"
-            disabled={status === 'sending'}
-            className="w-full rounded-lg bg-neutral-900 px-3 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-900"
-          >
-            {status === 'sending' ? 'Sending…' : 'Send sign-in link'}
-          </button>
-          {status === 'error' && (
-            <p className="text-sm text-red-600">{message}</p>
-          )}
-        </form>
-      )}
+      </div>
+
+      <WeddingPreview />
     </main>
   );
 }
