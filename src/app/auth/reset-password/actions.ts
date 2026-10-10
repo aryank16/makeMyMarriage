@@ -7,8 +7,8 @@ import {
   RECOVERY_COOKIE,
   RECOVERY_COOKIE_OPTIONS,
 } from '@/lib/auth/recovery';
-
-const MIN_LENGTH = 8;
+import { newPasswordSchema, fieldErrors } from '@/lib/auth/credentials';
+import { describeAuthError } from '@/lib/auth/supabase-errors';
 
 export type ResetPasswordState = { error: string } | null;
 
@@ -32,14 +32,23 @@ export async function resetPasswordAction(
     };
   }
 
-  const password = String(formData.get('password') ?? '');
-  const confirm = String(formData.get('confirm') ?? '');
-
-  if (password.length < MIN_LENGTH) {
-    return { error: `Use at least ${MIN_LENGTH} characters.` };
-  }
-  if (password !== confirm) {
-    return { error: 'Those two passwords do not match.' };
+  const parsed = newPasswordSchema.safeParse({
+    password: String(formData.get('password') ?? ''),
+    confirm: String(formData.get('confirm') ?? ''),
+  });
+  if (!parsed.success) {
+    // This form shows one message, so take the first that applies. The final
+    // fallback is not reachable today — every rule in newPasswordSchema
+    // carries a password or confirm path — but without it a rule added later
+    // under a different path would render an empty alert.
+    const errors = fieldErrors(parsed.error);
+    return {
+      error:
+        errors.password ??
+        errors.confirm ??
+        errors.form ??
+        'Check the password and try again.',
+    };
   }
 
   const supabase = await createClient();
@@ -56,8 +65,12 @@ export async function resetPasswordAction(
     };
   }
 
-  const { error } = await supabase.auth.updateUser({ password });
-  if (error) return { error: error.message };
+  const { error } = await supabase.auth.updateUser({
+    password: parsed.data.password,
+  });
+  // Supabase still rejects passwords its own policy considers weak, and says
+  // so in developer wording — map it like everywhere else.
+  if (error) return { error: describeAuthError(error) };
 
   cookieStore.set(RECOVERY_COOKIE, '', {
     ...RECOVERY_COOKIE_OPTIONS,

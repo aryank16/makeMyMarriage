@@ -72,6 +72,19 @@ body {
   opacity: 0.6;
 }
 
+/* Leaves room for a control sitting inside the field, such as the password
+ * reveal toggle, so long values do not run underneath it. */
+.input-field--with-affix {
+  padding-right: 48px;
+}
+
+/* Colour alone cannot carry the message — every field using this also sets
+ * aria-invalid and renders the reason underneath. */
+.input-field--error,
+.input-field--error:focus {
+  border-color: var(--accent);
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;

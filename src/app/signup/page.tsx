@@ -1,24 +1,19 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { safeNext } from '@/lib/auth/safe-next';
 import { authErrorMessage } from '@/lib/auth/auth-messages';
-import LoginForm from './login-form';
 import WeddingPreview from '@/components/auth/wedding-preview';
+import SignupForm from './signup-form';
 
 export const metadata: Metadata = {
-  title: 'Log in · MakeMyMarriage',
+  title: 'Create your account · MakeMyMarriage',
 };
 
-export default async function LoginPage(props: PageProps<'/login'>) {
+export default async function SignupPage(props: PageProps<'/signup'>) {
   const searchParams = await props.searchParams;
-  const next = safeNext(searchParams.next);
   const callbackError = authErrorMessage(searchParams.error);
 
-  /* Read on the server, at request time. A NEXT_PUBLIC_ variable would be
-   * inlined into the client bundle at build time and the whole OAuth branch
-   * dead-code eliminated, so flipping it on a deployed app would silently do
-   * nothing until the next rebuild. */
+  // Read per request, not inlined at build time — see the note in login/page.tsx.
   const googleEnabled = process.env.GOOGLE_AUTH_ENABLED === 'true';
 
   return (
@@ -46,7 +41,7 @@ export default async function LoginPage(props: PageProps<'/login'>) {
           </div>
         )}
 
-        <LoginForm next={next} googleEnabled={googleEnabled} />
+        <SignupForm googleEnabled={googleEnabled} />
 
         <div className="w-full max-w-[400px] mx-auto pt-6 border-t border-line">
           <p className="text-[14px] leading-[1.6] text-ink-muted">
