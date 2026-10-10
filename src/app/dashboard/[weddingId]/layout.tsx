@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth/session';
 import { prisma } from '@/lib/db';
 import { parseScope, satisfies, type Module } from '@/lib/auth/permissions';
+import SignOutButton from '@/components/auth/sign-out-button';
 
 export default async function WeddingLayout({
   children,
@@ -48,9 +49,12 @@ export default async function WeddingLayout({
             {membership.wedding.brideName} &amp; {membership.wedding.groomName}
           </h1>
         </div>
-        <span className="text-xs text-neutral-500">
-          {membership.role.toLowerCase()} · {membership.side.toLowerCase()} side
-        </span>
+        <div className="flex items-baseline gap-4">
+          <span className="text-xs text-neutral-500">
+            {membership.role.toLowerCase()} · {membership.side.toLowerCase()} side
+          </span>
+          <SignOutButton className="text-xs text-neutral-500 hover:text-neutral-900 underline underline-offset-4 disabled:opacity-60" />
+        </div>
       </header>
 
       <nav className="mt-6 flex gap-4 border-b border-neutral-200 text-sm dark:border-neutral-800">

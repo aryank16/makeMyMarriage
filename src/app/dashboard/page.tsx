@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser, getUserWeddings } from '@/lib/auth/session';
 import { pendingInvitesFor } from '@/lib/members/invite';
 import { AcceptInviteButton } from './accept-invite';
+import SignOutButton from '@/components/auth/sign-out-button';
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -17,8 +18,15 @@ export default async function DashboardPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="text-2xl font-semibold tracking-tight">Your weddings</h1>
-      <p className="mt-1 text-sm text-neutral-500">Signed in as {user.email}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Your weddings</h1>
+          <p className="mt-1 text-sm text-neutral-500">
+            Signed in as {user.email}
+          </p>
+        </div>
+        <SignOutButton />
+      </div>
 
       {invites.length > 0 && (
         <section className="mt-8">

@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth/session';
 import { EVENT_PRESETS } from '@/lib/weddings/event-presets';
+import AuthWatcher from '@/components/auth/auth-watcher';
 import { createWeddingAction } from './actions';
 
 export default async function OnboardingPage() {
@@ -9,6 +10,7 @@ export default async function OnboardingPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-12">
+      <AuthWatcher />
       <h1 className="text-2xl font-semibold tracking-tight">Set up your wedding</h1>
       <p className="mt-1 text-sm text-neutral-500">
         You can change all of this later.
