@@ -10,7 +10,7 @@ export function AcceptInviteButton({ membershipId }: { membershipId: string }) {
       type="button"
       disabled={pending}
       onClick={() => start(() => void acceptInviteAction(membershipId))}
-      className="rounded-lg bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-900"
+      className="shrink-0 h-[44px] px-6 rounded-[10px] bg-accent hover:bg-accent-hover text-surface text-[15px] font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {pending ? 'Accepting…' : 'Accept'}
     </button>

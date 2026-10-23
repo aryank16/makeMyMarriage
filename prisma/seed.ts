@@ -29,8 +29,7 @@ async function main() {
     prisma.rsvp.deleteMany(),
     prisma.guest.deleteMany(),
     prisma.household.deleteMany(),
-    prisma.payment.deleteMany(),
-    prisma.budgetCategory.deleteMany(),
+    prisma.expense.deleteMany(),
     prisma.vendorEvent.deleteMany(),
     prisma.vendor.deleteMany(),
     prisma.task.deleteMany(),
@@ -41,12 +40,12 @@ async function main() {
   ]);
 
   const people = [
-    { key: 'priya', name: 'Priya Sharma', phone: '+919810000001', role: 'OWNER', side: 'BRIDE' },
-    { key: 'arjun', name: 'Arjun Mehta', phone: '+919810000002', role: 'COUPLE', side: 'GROOM' },
-    { key: 'sunita', name: 'Sunita Sharma', phone: '+919810000003', role: 'PARENT', side: 'BRIDE' },
-    { key: 'rakesh', name: 'Rakesh Mehta', phone: '+919810000004', role: 'PARENT', side: 'GROOM' },
-    { key: 'neha', name: 'Neha Kapoor', phone: '+919810000005', role: 'PLANNER', side: 'SHARED' },
-    { key: 'vikram', name: 'Vikram Sharma', phone: '+919810000006', role: 'COORDINATOR', side: 'BRIDE' },
+    { key: 'priya', name: 'Priya Sharma', phone: '+919810000001', role: 'ADMIN', side: 'BRIDE' },
+    { key: 'arjun', name: 'Arjun Mehta', phone: '+919810000002', role: 'ADMIN', side: 'GROOM' },
+    { key: 'sunita', name: 'Sunita Sharma', phone: '+919810000003', role: 'MANAGER', side: 'BRIDE' },
+    { key: 'rakesh', name: 'Rakesh Mehta', phone: '+919810000004', role: 'MANAGER', side: 'GROOM' },
+    { key: 'neha', name: 'Neha Kapoor', phone: '+919810000005', role: 'MANAGER', side: 'SHARED' },
+    { key: 'vikram', name: 'Vikram Sharma', phone: '+919810000006', role: 'MANAGER', side: 'BRIDE' },
   ] as const;
 
   const users = Object.fromEntries(
@@ -198,23 +197,6 @@ async function main() {
     { name: 'Invitations', side: 'SHARED', planned: 80_000 },
   ] as const;
 
-  const categories = Object.fromEntries(
-    await Promise.all(
-      categorySpecs.map(async (c, i) => [
-        c.name,
-        await prisma.budgetCategory.create({
-          data: {
-            weddingId: wedding.id,
-            name: c.name,
-            side: c.side as Side,
-            plannedAmount: rupees(c.planned),
-            sortOrder: i,
-          },
-        }),
-      ]),
-    ),
-  );
-
   const vendorSpecs = [
     { name: 'Narain Niwas Palace', category: 'VENUE', cat: 'Venue', agreed: 620_000, side: 'SHARED', status: 'BOOKED', paid: 200_000 },
     { name: 'Rajasthani Rasoi Caterers', category: 'CATERING', cat: 'Catering', agreed: 780_000, side: 'SHARED', status: 'BOOKED', paid: 150_000 },
@@ -239,34 +221,28 @@ async function main() {
     });
 
     if (v.paid > 0) {
-      await prisma.payment.create({
+      await prisma.expense.create({
         data: {
           weddingId: wedding.id,
-          categoryId: categories[v.cat].id,
           vendorId: vendor.id,
-          description: `Advance to ${v.name}`,
+          title: `Advance to ${v.name}`,
           amount: rupees(v.paid),
-          side: v.side as Side,
-          status: 'PAID',
-          paidAt: daysFrom(new Date(), -20),
-          method: 'BANK_TRANSFER',
-          paidByUserId: v.side === 'GROOM' ? users.rakesh.id : users.sunita.id,
+          category: v.cat,
+          date: daysFrom(new Date(), -20),
         },
       });
     }
 
-    // One upcoming balance per booked vendor, so the due-payments alert has data.
+    // A second expense per booked vendor, so the running total has depth.
     if (v.status === 'BOOKED') {
-      await prisma.payment.create({
+      await prisma.expense.create({
         data: {
           weddingId: wedding.id,
-          categoryId: categories[v.cat].id,
           vendorId: vendor.id,
-          description: `Balance to ${v.name}`,
+          title: `Balance to ${v.name}`,
           amount: rupees(v.agreed - v.paid),
-          side: v.side as Side,
-          status: 'DUE',
-          dueDate: daysFrom(weddingDate, -7),
+          category: v.cat,
+          date: daysFrom(weddingDate, -7),
         },
       });
     }
@@ -315,9 +291,9 @@ async function main() {
     data: {
       weddingId: otherWedding.id,
       userId: other.id,
-      role: 'OWNER',
+      role: 'ADMIN',
       side: 'BRIDE',
-      permissions: ROLE_DEFAULTS.OWNER,
+      permissions: ROLE_DEFAULTS.ADMIN,
       acceptedAt: new Date(),
     },
   });

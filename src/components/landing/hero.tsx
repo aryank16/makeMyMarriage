@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import StartCta from '@/components/landing/start-cta';
 
 /* Everything in the browser mockup is illustrative — invented names and
  * numbers that show what the guest table looks like in use. None of it is
@@ -41,7 +41,7 @@ const GUESTS: { name: string; allowed: number; invited: boolean[] }[] = [
   },
 ];
 
-export default function Hero() {
+export default function Hero({ signedIn }: { signedIn: string | null }) {
   return (
     <section className="max-w-[1200px] mx-auto px-6 py-24 lg:py-28">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -56,9 +56,7 @@ export default function Hero() {
             in one gallery.
           </p>
           <div className="flex flex-col items-start gap-3">
-            <Link href="/signup" className="btn-primary">
-              Start planning for free
-            </Link>
+            <StartCta signedIn={signedIn} />
             <span className="text-[15px] text-ink-muted">
               Free while we&rsquo;re in early access. No card needed.
             </span>

@@ -26,6 +26,21 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
   });
 });
 
+/**
+ * Just the signed-in address, or null — no User row, no database.
+ *
+ * For the public landing page, which needs to know whether someone is
+ * already signed in so it can say so, but has no business creating a User
+ * row for a visitor who is only reading the marketing copy.
+ */
+export const getSignedInEmail = cache(async (): Promise<string | null> => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user?.email ?? null;
+});
+
 /** The Supabase side of an identity, reduced to what our own table needs. */
 export type AuthIdentity = {
   /** auth.users.id */
@@ -76,12 +91,44 @@ export async function requireUser(): Promise<User> {
   return user;
 }
 
-/** Every wedding this user belongs to, newest first. */
+/**
+ * Every wedding this user belongs to, newest first, with the three counts the
+ * dashboard card shows.
+ *
+ * Counted in the same query rather than per card: three weddings would
+ * otherwise be nine extra round trips. Organizers counts accepted members
+ * only — an unaccepted invitation is not yet a person on the team.
+ */
 export async function getUserWeddings(userId: string) {
   const memberships = await prisma.membership.findMany({
     where: { userId, acceptedAt: { not: null } },
-    include: { wedding: true },
+    include: {
+      wedding: {
+        include: {
+          _count: {
+            select: {
+              events: true,
+              guests: true,
+              memberships: { where: { acceptedAt: { not: null } } },
+            },
+          },
+        },
+      },
+    },
     orderBy: { createdAt: 'desc' },
   });
-  return memberships.map((m) => ({ ...m.wedding, role: m.role, side: m.side }));
+
+  return memberships.map(({ wedding, role, side }) => {
+    const { _count, ...rest } = wedding;
+    return {
+      ...rest,
+      role,
+      side,
+      counts: {
+        functions: _count.events,
+        guests: _count.guests,
+        organizers: _count.memberships,
+      },
+    };
+  });
 }

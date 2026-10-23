@@ -3,7 +3,6 @@ import { prisma as defaultPrisma } from '@/lib/db';
 import {
   type Module,
   type PermissionScope,
-  ownBudgetSides,
   parseScope,
   satisfies,
 } from './permissions';
@@ -75,28 +74,4 @@ export async function requirePermission(
     scope,
     side: membership.side,
   };
-}
-
-/**
- * Budget sides this member may read, including any side that has explicitly
- * opted into sharing with the other family. Call this instead of filtering by
- * side by hand — the settlement view is the only place cross-side totals are
- * legitimate, and it needs the same rule.
- */
-export async function visibleBudgetSides(
-  ctx: AuthContext,
-  client: PrismaClient = defaultPrisma,
-): Promise<Side[]> {
-  const base = ownBudgetSides(ctx.scope.budget, ctx.side);
-  if (base.length === 0) return [];
-  if (base.includes('BRIDE') && base.includes('GROOM')) return base;
-
-  const sharing = await client.membership.findMany({
-    where: { weddingId: ctx.weddingId, sharesBudget: true },
-    select: { side: true },
-  });
-
-  const sides = new Set<Side>(base);
-  for (const m of sharing) sides.add(m.side);
-  return [...sides];
 }

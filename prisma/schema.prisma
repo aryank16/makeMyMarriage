@@ -16,17 +16,17 @@ datasource db {
 // ---------- Identity and tenancy ----------
 
 model User {
-  id        String   @id @default(cuid())
+  id         String   @id @default(cuid())
   // Email is the login identity during development (Supabase magic link).
   // Phone is what the product actually wants in India and is collected at
   // onboarding; it becomes the identity when phone OTP is enabled before launch.
-  email     String   @unique
-  phone     String?  @unique // E.164
-  supabaseId String? @unique // auth.users.id
-  name      String
-  avatarUrl String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  email      String   @unique
+  phone      String?  @unique // E.164
+  supabaseId String?  @unique // auth.users.id
+  name       String
+  avatarUrl  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   memberships     Membership[]
   createdWeddings Wedding[]    @relation("WeddingCreator")
@@ -47,21 +47,20 @@ model Wedding {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  createdBy        User             @relation("WeddingCreator", fields: [createdById], references: [id])
-  memberships      Membership[]
-  events           Event[]
-  households       Household[]
-  guests           Guest[]
-  rsvps            Rsvp[]
-  invitations      Invitation[]
-  vendors          Vendor[]
-  budgetCategories BudgetCategory[]
-  payments         Payment[]
-  tasks            Task[]
-  photos           Photo[]
-  website          Website?
-  messageLogs      MessageLog[]
-  auditLogs        AuditLog[]
+  createdBy   User         @relation("WeddingCreator", fields: [createdById], references: [id])
+  memberships Membership[]
+  events      Event[]
+  households  Household[]
+  guests      Guest[]
+  rsvps       Rsvp[]
+  invitations Invitation[]
+  vendors     Vendor[]
+  expenses    Expense[]
+  tasks       Task[]
+  photos      Photo[]
+  website     Website?
+  messageLogs MessageLog[]
+  auditLogs   AuditLog[]
 }
 
 model Membership {
@@ -137,7 +136,7 @@ model Household {
 model Guest {
   id                 String            @id @default(cuid())
   weddingId          String
-  householdId        String
+  householdId        String? // legacy; the PRD drops households entirely
   name               String
   phone              String? // E.164, normalised for dedupe
   email              String?
@@ -150,10 +149,18 @@ model Guest {
   tags               String[]
   notes              String?
   isPlusOne          Boolean           @default(false)
+  // PRD: one row per invitation, carrying how many people it admits, and the
+  // token its guest link is built from.
+  allowedGuests      Int               @default(1)
+  inviteToken        String?           @unique
+  // When an invitation actually went out. Null means the row exists and the
+  // link is ready, but nobody has been told yet — a guest added by phone only
+  // is shared by hand over WhatsApp, so the two states are not the same.
+  invitedAt          DateTime?
   createdAt          DateTime          @default(now())
 
-  wedding   Wedding   @relation(fields: [weddingId], references: [id], onDelete: Cascade)
-  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  wedding   Wedding    @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  household Household? @relation(fields: [householdId], references: [id], onDelete: Cascade)
   rsvps     Rsvp[]
 
   @@index([weddingId, side])
@@ -251,7 +258,7 @@ model Vendor {
 
   wedding  Wedding       @relation(fields: [weddingId], references: [id], onDelete: Cascade)
   events   VendorEvent[]
-  payments Payment[]
+  expenses Expense[]
   tasks    Task[]
 
   @@index([weddingId, category])
@@ -267,44 +274,24 @@ model VendorEvent {
   @@id([vendorId, eventId])
 }
 
-model BudgetCategory {
-  id            String @id @default(cuid())
-  weddingId     String
-  name          String
-  side          Side   @default(SHARED)
-  plannedAmount BigInt @default(0) // paise
-  sortOrder     Int    @default(0)
-
-  wedding  Wedding   @relation(fields: [weddingId], references: [id], onDelete: Cascade)
-  payments Payment[]
-
-  @@unique([weddingId, name])
-}
-
-model Payment {
-  id           String         @id @default(cuid())
-  weddingId    String
-  categoryId   String
-  vendorId     String?
-  description  String
-  amount       BigInt // paise
-  side         Side           @default(SHARED)
-  paidByUserId String?
-  dueDate      DateTime?
-  paidAt       DateTime?
-  method       PaymentMethod?
-  receiptUrl   String?
-  status       PaymentStatus  @default(DUE)
-  createdAt    DateTime       @default(now())
-
-  wedding  Wedding        @relation(fields: [weddingId], references: [id], onDelete: Cascade)
-  category BudgetCategory @relation(fields: [categoryId], references: [id])
-  vendor   Vendor?        @relation(fields: [vendorId], references: [id])
-
-  @@index([weddingId, status, dueDate])
-}
-
 // ---------- Tasks ----------
+
+model Expense {
+  id        String   @id @default(cuid())
+  weddingId String
+  title     String
+  amount    BigInt // paise. Never Float, never Int — see the spec.
+  category  String // free text: venue, catering, decor, ...
+  date      DateTime
+  vendorId  String?
+  notes     String?
+  createdAt DateTime @default(now())
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  vendor  Vendor? @relation(fields: [vendorId], references: [id])
+
+  @@index([weddingId, date])
+}
 
 model Task {
   id                String       @id @default(cuid())
@@ -399,14 +386,11 @@ enum Side {
   SHARED
 }
 
+/// Two roles, per the spec. Both can run the whole wedding; only an Admin
+/// can bring people in, remove them, or change someone's role.
 enum Role {
-  OWNER
-  COUPLE
-  PARENT
-  PLANNER
-  COORDINATOR
-  CONTRIBUTOR
-  VIEWER
+  ADMIN
+  MANAGER
 }
 
 enum EventType {
@@ -469,22 +453,6 @@ enum VendorStatus {
   BOOKED
   COMPLETED
   CANCELLED
-}
-
-enum PaymentStatus {
-  DUE
-  PARTIAL
-  PAID
-  CANCELLED
-}
-
-enum PaymentMethod {
-  CASH
-  UPI
-  BANK_TRANSFER
-  CARD
-  CHEQUE
-  OTHER
 }
 
 enum TaskStatus {

@@ -17,6 +17,15 @@ const DEFAULT_CLASS =
  * otherwise rewrite the cookie on its next refresh tick — and removes the
  * cookie itself.
  *
+ * `global`, not `local`: local ends only the session doing the signing out,
+ * so a session left behind on a borrowed laptop stays valid for as long as
+ * its refresh token lives, and no amount of signing out here touches it.
+ * Sessions accumulated that way — five of them, over three days, from
+ * browsers that were closed rather than signed out of. Signing out should
+ * mean signing out, so this ends every session on the account. The cost is
+ * that it also signs out your phone, which is the right trade for the thing
+ * most people mean when they reach for this button.
+ *
  * There is deliberately no server action in this path. Clearing the cookie
  * first means a follow-up request to the page you are leaving is no longer
  * authenticated, so the proxy answers it with /login?next=<that page>. That
@@ -35,7 +44,7 @@ export default function SignOutButton({ className }: { className?: string }) {
     beginSignOut();
 
     try {
-      await createClient().auth.signOut({ scope: 'local' });
+      await createClient().auth.signOut({ scope: 'global' });
     } catch {
       // A dead connection must not trap someone in a signed-in UI. The
       // cookie is removed locally either way, so carry on to /login.

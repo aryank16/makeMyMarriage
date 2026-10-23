@@ -28,7 +28,7 @@ async function uniqueSlug(base: string, client: PrismaClient): Promise<string> {
 }
 
 /**
- * Creates the wedding, the creator's OWNER membership, and the selected
+ * Creates the wedding, the creator's ADMIN membership, and the selected
  * events — in one transaction, because a wedding without its owner membership
  * is a record nobody can reach.
  */
@@ -56,9 +56,9 @@ export async function createWedding(
       data: {
         weddingId: wedding.id,
         userId,
-        role: 'OWNER',
+        role: 'ADMIN',
         side: data.creatorSide,
-        permissions: ROLE_DEFAULTS.OWNER,
+        permissions: ROLE_DEFAULTS.ADMIN,
         acceptedAt: new Date(),
       },
     });

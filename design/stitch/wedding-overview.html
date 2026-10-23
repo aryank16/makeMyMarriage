@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeMyMarriage — Wedding Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #FAF7F2;
+      color: #1A1613;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif-display {
+      font-family: 'Instrument Serif', Georgia, serif;
+    }
+    .border-subtle {
+      border-color: #E4DCD1;
+    }
+    .bg-warm-bone {
+      background-color: #FAF7F2;
+    }
+    .bg-inset {
+      background-color: #F4EFE8;
+    }
+    .text-primary {
+      color: #1A1613;
+    }
+    .text-secondary {
+      color: #6B625A;
+    }
+    .text-accent {
+      color: #A1472F;
+    }
+    .border-accent {
+      border-color: #A1472F;
+    }
+    .text-deep-contrast {
+      color: #1F4D42;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#FAF7F2] text-[#1A1613]">
+
+  <!-- TOP BAR (72px tall, #FAF7F2, 1px #E4DCD1 bottom border) -->
+  <header class="h-[72px] w-full border-b border-[#E4DCD1] bg-[#FAF7F2] px-8 flex items-center justify-between">
+    <!-- Left: Wordmark / Logo -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 18L10 6L14 14L17 8L20 18" stroke="#A1472F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="10" cy="6" r="1.5" fill="#1A1613"/>
+          <circle cx="17" cy="8" r="1.5" fill="#1A1613"/>
+        </svg>
+        <span class="font-serif-display text-[22px] tracking-tight text-[#1A1613] font-normal leading-none">MakeMyMarriage</span>
+      </div>
+    </div>
+
+    <!-- Right: signed-in email, middot, Sign out -->
+    <div class="flex items-center gap-2.5 text-[14px] text-[#6B625A]">
+      <span>priya@example.com</span>
+      <span class="text-[#E4DCD1] font-bold leading-none">·</span>
+      <a href="#" class="hover:text-[#1A1613] transition-colors">Sign out</a>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER (Centred column max 1000px, generous vertical spacing) -->
+  <main class="max-w-[1000px] mx-auto px-6 pt-10 pb-24">
+
+    <!-- 1. BACK LINK -->
+    <div class="mb-6">
+      <a href="#" class="inline-flex items-center gap-1.5 text-[13px] text-[#6B625A] hover:text-[#1A1613] transition-colors">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>All weddings</span>
+      </a>
+    </div>
+
+    <!-- 2. WEDDING HEADER ROW -->
+    <div class="flex items-center justify-between pb-6">
+      <div>
+        <h1 class="font-serif-display text-[30px] text-[#1A1613] leading-none mb-2 font-normal">Meera &amp; Arjun</h1>
+        <p class="text-[15px] text-[#6B625A] leading-none">Udaipur · 13 December 2026</p>
+      </div>
+      <!-- Right: Role pill -->
+      <div class="flex items-center">
+        <span class="px-3.5 py-1 text-[12px] font-medium text-[#A1472F] bg-[#FAF7F2] border border-[#E4DCD1] rounded-full leading-normal">
+          Admin
+        </span>
+      </div>
+    </div>
+
+    <!-- 3. HORIZONTAL TAB ROW -->
+    <nav class="relative border-b border-[#E4DCD1] mb-8">
+      <div class="flex gap-[28px]">
+        <!-- Overview (Active tab) -->
+        <a href="#" class="relative pb-3 text-[15px] font-medium text-[#1A1613] tracking-normal">
+          Overview
+          <span class="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#A1472F]"></span>
+        </a>
+        <a href="#" class="pb-3 text-[15px] font-normal text-[#6B625A] hover:text-[#1A1613] transition-colors">
+          Events
+        </a>
+        <a href="#" class="pb-3 text-[15px] font-normal text-[#6B625A] hover:text-[#1A1613] transition-colors">
+          Guests
+        </a>
+        <a href="#" class="pb-3 text-[15px] font-normal text-[#6B625A] hover:text-[#1A1613] transition-colors">
+          Vendors
+        </a>
+        <a href="#" class="pb-3 text-[15px] font-normal text-[#6B625A] hover:text-[#1A1613] transition-colors">
+          Budget
+        </a>
+        <a href="#" class="pb-3 text-[15px] font-normal text-[#6B625A] hover:text-[#1A1613] transition-colors">
+          Organizers
+        </a>
+      </div>
+    </nav>
+
+    <!-- 4. COUNTDOWN STRIP -->
+    <div class="w-full bg-[#F4EFE8] border border-[#E4DCD1] rounded-[10px] p-5 mb-6 flex items-center justify-between">
+      <div class="flex items-baseline gap-2.5">
+        <span class="font-serif-display text-[32px] text-[#1F4D42] leading-none">42</span>
+        <span class="text-[16px] text-[#1A1613] font-normal">days to the wedding</span>
+      </div>
+      <div class="text-[14px] text-[#6B625A]">
+        Mehendi is first, in 40 days
+      </div>
+    </div>
+
+    <!-- 5. STATISTIC CARDS ROW (3 equal cards) -->
+    <div class="grid grid-cols-3 gap-6 mb-10">
+      <!-- Card 1: 6 / FUNCTIONS -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6">
+        <div class="font-serif-display text-[32px] text-[#1A1613] leading-none mb-3">6</div>
+        <div class="text-[12px] font-medium text-[#6B625A] uppercase tracking-[0.08em]">FUNCTIONS</div>
+      </div>
+
+      <!-- Card 2: 248 / GUESTS -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6">
+        <div class="font-serif-display text-[32px] text-[#1A1613] leading-none mb-3">248</div>
+        <div class="text-[12px] font-medium text-[#6B625A] uppercase tracking-[0.08em]">GUESTS</div>
+      </div>
+
+      <!-- Card 3: 4 / ORGANIZERS -->
+      <div class="bg-white border border-[#E4DCD1] rounded-[10px] p-6">
+        <div class="font-serif-display text-[32px] text-[#1A1613] leading-none mb-3">4</div>
+        <div class="text-[12px] font-medium text-[#6B625A] uppercase tracking-[0.08em]">ORGANIZERS</div>
+      </div>
+    </div>
+
+    <!-- 6. SECTION HEADING -->
+    <div class="text-[13px] font-medium text-[#6B625A] uppercase tracking-[0.08em] mb-3">
+      SCHEDULE
+    </div>
+
+    <!-- 7. SCHEDULE TABLE -->
+    <div class="bg-white border border-[#E4DCD1] rounded-[10px] overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-[#FAF7F2] border-b border-[#E4DCD1]">
+            <th class="py-3 px-6 text-[12px] font-medium text-[#6B625A] uppercase tracking-[0.08em]">FUNCTION</th>
+            <th class="py-3 px-6 text-[12px] font-medium text-[#6B625A] uppercase tracking-[0.08em]">DATE &amp; TIME</th>
+            <th class="py-3 px-6 text-[12px] font-medium text-[#6B625A] uppercase tracking-[0.08em]">VENUE</th>
+            <th class="py-3 px-6 text-[12px] font-medium text-[#6B625A] uppercase tracking-[0.08em] text-right">HOST</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[#E4DCD1]">
+          <!-- Row 1 -->
+          <tr>
+            <td class="py-4 px-6 text-[15px] font-medium text-[#1A1613]">Mehendi</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">11 Dec 2026, 4:00 pm</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">Sharma Residence, Udaipur</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A] text-right">Bride</td>
+          </tr>
+          <!-- Row 2 -->
+          <tr>
+            <td class="py-4 px-6 text-[15px] font-medium text-[#1A1613]">Haldi</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">12 Dec 2026, 11:00 am</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">Sharma Residence, Udaipur</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A] text-right">Bride</td>
+          </tr>
+          <!-- Row 3 -->
+          <tr>
+            <td class="py-4 px-6 text-[15px] font-medium text-[#1A1613]">Sangeet</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">12 Dec 2026, 7:00 pm</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">The Oberoi Udaivilas</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A] text-right">Shared</td>
+          </tr>
+          <!-- Row 4 -->
+          <tr>
+            <td class="py-4 px-6 text-[15px] font-medium text-[#1A1613]">Wedding ceremony</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">13 Dec 2026, 8:00 pm</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">The Oberoi Udaivilas</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A] text-right">Shared</td>
+          </tr>
+          <!-- Row 5 -->
+          <tr>
+            <td class="py-4 px-6 text-[15px] font-medium text-[#1A1613]">Reception</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">14 Dec 2026, 7:00 pm</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A]">Hotel Lakend</td>
+            <td class="py-4 px-6 text-[14px] text-[#6B625A] text-right">Groom</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+</body>
+</html>

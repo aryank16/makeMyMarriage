@@ -35,8 +35,7 @@ export async function resetDb() {
     prisma.rsvp.deleteMany(),
     prisma.guest.deleteMany(),
     prisma.household.deleteMany(),
-    prisma.payment.deleteMany(),
-    prisma.budgetCategory.deleteMany(),
+    prisma.expense.deleteMany(),
     prisma.vendor.deleteMany(),
     prisma.event.deleteMany(),
     prisma.membership.deleteMany(),
@@ -91,7 +90,7 @@ export async function makeMembership(opts: {
 }
 
 /** A wedding with an owner, used as the "other tenant" in isolation tests. */
-export async function makeTenant(role: Role = 'OWNER', side: Side = 'SHARED') {
+export async function makeTenant(role: Role = 'ADMIN', side: Side = 'SHARED') {
   const user = await makeUser();
   const wedding = await makeWedding(user.id);
   const membership = await makeMembership({

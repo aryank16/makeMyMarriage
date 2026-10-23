@@ -3,27 +3,19 @@ import { getCurrentUser } from '@/lib/auth/session';
 import { prisma } from '@/lib/db';
 import { requirePermission } from '@/lib/auth/require-permission';
 import { ROLE_DEFAULTS } from '@/lib/auth/permissions';
-import { inviteAction } from './actions';
-
-const ROLE_SUMMARY: Record<string, string> = {
-  OWNER: 'Everything, including removing other organizers',
-  COUPLE: 'Everything except removing organizers',
-  PARENT: 'Guests, events, vendors, own side of the budget',
-  PLANNER: 'Guests, events, vendors, both budgets (read only)',
-  COORDINATOR: 'Guests and photos. No access to money',
-  CONTRIBUTOR: 'Can view guests and add photos',
-  VIEWER: 'Can view the schedule only',
-};
+import { emailIsConfigured } from '@/lib/email/send';
+import InviteOrganizerForm from '@/components/weddings/invite-organizer-form';
+import InviteResultBanner from '@/components/weddings/invite-result-banner';
 
 export default async function MembersPage({
   params,
   searchParams,
 }: {
   params: Promise<{ weddingId: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; invited?: string; status?: string }>;
 }) {
   const { weddingId } = await params;
-  const { error } = await searchParams;
+  const { error, invited, status } = await searchParams;
   const user = await getCurrentUser();
   if (!user) redirect('/login');
 
@@ -36,30 +28,40 @@ export default async function MembersPage({
   });
 
   const assignableRoles = Object.keys(ROLE_DEFAULTS).filter(
-    (r) => r !== 'OWNER' || ctx.scope.members === 'manage',
+    (r) => r !== 'ADMIN' || ctx.scope.members === 'manage',
   );
 
   return (
     <div className="space-y-10">
       <section>
-        <h2 className="text-sm font-medium text-neutral-500">Organizers</h2>
-        <ul className="mt-3 divide-y divide-neutral-200 dark:divide-neutral-800">
-          {members.map((m) => (
-            <li key={m.id} className="flex items-baseline justify-between py-3">
-              <div>
-                <p className="font-medium">
-                  {m.user.name}
-                  {!m.acceptedAt && (
-                    <span className="ml-2 rounded bg-neutral-100 px-1.5 py-0.5 text-xs font-normal text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-                      invited
+        <h2 className="mb-3 text-[13px] font-medium uppercase tracking-[0.08em] text-ink-muted">
+          Organizers
+        </h2>
+
+        <ul className="bg-surface border-standard card-radius divide-y divide-line">
+          {members.map((member) => (
+            <li
+              key={member.id}
+              className="flex flex-wrap items-baseline justify-between gap-2 px-5 py-4"
+            >
+              <div className="min-w-0">
+                <p className="text-[15px] font-medium text-ink">
+                  {member.user.name}
+                  {!member.acceptedAt && (
+                    <span className="ml-2 rounded-full border border-line bg-bone px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.04em] text-accent align-middle">
+                      Invited
                     </span>
                   )}
                 </p>
-                <p className="text-sm text-neutral-500">{m.user.email}</p>
+                <p className="text-[14px] text-ink-muted truncate">
+                  {member.user.email}
+                </p>
               </div>
-              <div className="text-right text-sm">
-                <p>{m.role.toLowerCase()}</p>
-                <p className="text-neutral-500">{m.side.toLowerCase()} side</p>
+              <div className="text-right text-[14px] shrink-0">
+                <p className="text-ink capitalize">{member.role.toLowerCase()}</p>
+                <p className="text-ink-muted capitalize">
+                  {member.side.toLowerCase()} side
+                </p>
               </div>
             </li>
           ))}
@@ -67,58 +69,19 @@ export default async function MembersPage({
       </section>
 
       <section>
-        <h2 className="text-sm font-medium text-neutral-500">Invite someone</h2>
-        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-        <form action={inviteAction} className="mt-3 space-y-3">
-          <input type="hidden" name="weddingId" value={weddingId} />
-          <div className="grid grid-cols-2 gap-3">
-            <input
-              name="name"
-              required
-              placeholder="Name"
-              className="rounded-lg border border-neutral-300 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
-            />
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="Email"
-              className="rounded-lg border border-neutral-300 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <select
-              name="role"
-              defaultValue="PARENT"
-              className="rounded-lg border border-neutral-300 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
-            >
-              {assignableRoles.map((r) => (
-                <option key={r} value={r}>
-                  {r.charAt(0) + r.slice(1).toLowerCase()} — {ROLE_SUMMARY[r]}
-                </option>
-              ))}
-            </select>
-            <select
-              name="side"
-              defaultValue={ctx.side}
-              className="rounded-lg border border-neutral-300 px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
-            >
-              <option value="BRIDE">Bride&apos;s side</option>
-              <option value="GROOM">Groom&apos;s side</option>
-              <option value="SHARED">Both</option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            className="rounded-lg bg-neutral-900 px-3 py-2 text-sm font-medium text-white dark:bg-neutral-100 dark:text-neutral-900"
-          >
-            Send invitation
-          </button>
-        </form>
-        <p className="mt-2 text-xs text-neutral-500">
-          Budget access is limited to each person&apos;s own side by default. They see
-          nothing of the other family&apos;s spending unless that side shares it.
-        </p>
+        <h2 className="mb-3 text-[13px] font-medium uppercase tracking-[0.08em] text-ink-muted">
+          Invite an organizer
+        </h2>
+
+        <InviteResultBanner invited={invited} status={status} error={error} />
+
+        <InviteOrganizerForm
+          weddingId={weddingId}
+          assignableRoles={assignableRoles}
+          defaultSide={ctx.side}
+          mailerReady={emailIsConfigured()}
+          returnTo={`/dashboard/${weddingId}/members`}
+        />
       </section>
     </div>
   );

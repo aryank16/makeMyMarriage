@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invitation — Priya & Arjun</title>
+  <!-- Google Fonts: Instrument Serif & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #FAF7F2;
+      --inset-bg: #F4EFE8;
+      --text-primary: #1A1613;
+      --text-secondary: #6B625A;
+      --accent: #A1472F;
+      --hairline: #E4DCD1;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .font-serif {
+      font-family: 'Instrument Serif', Georgia, serif;
+    }
+
+    /* Print & Screenshot fidelity enhancements */
+    ::selection {
+      background-color: #E4DCD1;
+      color: #1A1613;
+    }
+
+    /* Timeline stem styling */
+    .timeline-stem {
+      position: absolute;
+      top: 14px;
+      bottom: 24px;
+      left: 5px;
+      width: 1px;
+      background-color: var(--hairline);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#FAF7F2] text-[#1A1613] flex flex-col justify-between selection:bg-[#E4DCD1]">
+
+  <!-- Outer centered viewport container (max-w-[560px] to preserve narrow letterpress card feel on mobile and desktop) -->
+  <main class="w-full max-w-[560px] mx-auto px-6 sm:px-10 py-16 sm:py-24 flex-1 flex flex-col">
+
+    <!-- 1. Eyebrow -->
+    <header class="text-center mb-8 sm:mb-12">
+      <p class="text-[11px] sm:text-[12px] font-medium tracking-[0.22em] uppercase text-[#A1472F] select-none">
+        You are invited
+      </p>
+
+      <!-- 2. Hero Couple Names -->
+      <h1 class="font-serif text-[58px] sm:text-[76px] leading-[0.95] tracking-[-0.01em] text-[#1A1613] mt-6 sm:mt-8 mb-4">
+        Priya <span class="text-[#A1472F] font-serif italic text-[1.12em] font-normal inline-block mx-0.5">&amp;</span> Arjun
+      </h1>
+
+      <!-- 3. Date & City Line -->
+      <p class="text-[14px] sm:text-[15px] font-normal tracking-[0.03em] text-[#6B625A]">
+        21 November 2026 &middot; Jaipur
+      </p>
+    </header>
+
+    <!-- 4. Quiet Personal Greeting Inset Block -->
+    <section class="my-6 sm:my-10 bg-[#F4EFE8] rounded-[6px] border border-[#E4DCD1] px-6 sm:px-8 py-6 text-center">
+      <p class="text-[15px] sm:text-[16px] leading-[1.65] font-normal text-[#1A1613]">
+        Dear Ramesh &amp; Sunita Sharma, we would be honoured to have you with us.
+      </p>
+      <p class="text-[12px] sm:text-[13px] tracking-[0.02em] text-[#6B625A] mt-2.5 font-light">
+        This invitation is for 2 people.
+      </p>
+    </section>
+
+    <!-- 5. Single Centered Hairline Divider / Quiet Geometric Diamond -->
+    <div class="my-10 sm:my-14 flex items-center justify-center gap-3">
+      <div class="w-12 sm:w-16 h-[1px] bg-[#E4DCD1]"></div>
+      <div class="w-1.5 h-1.5 rotate-45 border border-[#A1472F] bg-[#FAF7F2]"></div>
+      <div class="w-12 sm:w-16 h-[1px] bg-[#E4DCD1]"></div>
+    </div>
+
+    <!-- 6. Functions Timeline -->
+    <section class="mt-2 mb-16 sm:mb-20 pl-2">
+      <div class="relative">
+        <!-- Vertical Hairline Guideline -->
+        <div class="timeline-stem"></div>
+
+        <!-- Timeline Entries -->
+        <div class="space-y-12 sm:space-y-16">
+
+          <!-- Function 1: Mehendi -->
+          <div class="relative pl-7 sm:pl-8 group">
+            <!-- Node Marker: Geometric refined diamond dot -->
+            <div class="absolute left-0 top-[10px] w-[11px] h-[11px] rotate-45 bg-[#FAF7F2] border border-[#A1472F] shadow-[0_0_0_3px_#FAF7F2]"></div>
+
+            <h2 class="font-serif text-[26px] sm:text-[28px] text-[#1A1613] leading-none mb-2 font-normal">
+              Mehendi
+            </h2>
+            <div class="space-y-1">
+              <p class="text-[14px] sm:text-[15px] font-normal text-[#1A1613]">
+                Thursday 19 November &middot; 4:00 pm
+              </p>
+              <p class="text-[13px] sm:text-[14px] text-[#6B625A] flex items-center gap-2">
+                <span>Sharma House, Jaipur</span>
+                <span class="text-[#E4DCD1] select-none">&middot;</span>
+                <a href="#map" class="text-[#A1472F] hover:underline underline-offset-2 text-[12px] sm:text-[13px] font-medium tracking-[0.01em]">Map</a>
+              </p>
+              <p class="text-[12px] sm:text-[13px] text-[#6B625A] pt-0.5 font-light italic">
+                Dress code: Ivory and gold
+              </p>
+            </div>
+          </div>
+
+          <!-- Function 2: Haldi -->
+          <div class="relative pl-7 sm:pl-8 group">
+            <!-- Node Marker -->
+            <div class="absolute left-0 top-[10px] w-[11px] h-[11px] rotate-45 bg-[#FAF7F2] border border-[#A1472F] shadow-[0_0_0_3px_#FAF7F2]"></div>
+
+            <h2 class="font-serif text-[26px] sm:text-[28px] text-[#1A1613] leading-none mb-2 font-normal">
+              Haldi
+            </h2>
+            <div class="space-y-1">
+              <p class="text-[14px] sm:text-[15px] font-normal text-[#1A1613]">
+                Friday 20 November &middot; 11:00 am
+              </p>
+              <p class="text-[13px] sm:text-[14px] text-[#6B625A] flex items-center gap-2">
+                <span>Sharma House, Jaipur</span>
+                <span class="text-[#E4DCD1] select-none">&middot;</span>
+                <a href="#map" class="text-[#A1472F] hover:underline underline-offset-2 text-[12px] sm:text-[13px] font-medium tracking-[0.01em]">Map</a>
+              </p>
+              <p class="text-[12px] sm:text-[13px] text-[#6B625A] pt-0.5 font-light italic">
+                Dress code: Haldi yellow &amp; tones of mustard
+              </p>
+            </div>
+          </div>
+
+          <!-- Function 3: Sangeet -->
+          <div class="relative pl-7 sm:pl-8 group">
+            <!-- Node Marker -->
+            <div class="absolute left-0 top-[10px] w-[11px] h-[11px] rotate-45 bg-[#FAF7F2] border border-[#A1472F] shadow-[0_0_0_3px_#FAF7F2]"></div>
+
+            <h2 class="font-serif text-[26px] sm:text-[28px] text-[#1A1613] leading-none mb-2 font-normal">
+              Sangeet
+            </h2>
+            <div class="space-y-1">
+              <p class="text-[14px] sm:text-[15px] font-normal text-[#1A1613]">
+                Friday 20 November &middot; 7:00 pm
+              </p>
+              <p class="text-[13px] sm:text-[14px] text-[#6B625A] flex items-center gap-2">
+                <span>The Oberoi Rajvilas, Jaipur</span>
+                <span class="text-[#E4DCD1] select-none">&middot;</span>
+                <a href="#map" class="text-[#A1472F] hover:underline underline-offset-2 text-[12px] sm:text-[13px] font-medium tracking-[0.01em]">Map</a>
+              </p>
+              <p class="text-[12px] sm:text-[13px] text-[#6B625A] pt-0.5 font-light italic">
+                Dress code: Traditional festive elegance
+              </p>
+            </div>
+          </div>
+
+          <!-- Function 4: Wedding ceremony -->
+          <div class="relative pl-7 sm:pl-8 group">
+            <!-- Node Marker -->
+            <div class="absolute left-0 top-[10px] w-[11px] h-[11px] rotate-45 bg-[#FAF7F2] border border-[#A1472F] shadow-[0_0_0_3px_#FAF7F2]"></div>
+
+            <h2 class="font-serif text-[26px] sm:text-[28px] text-[#1A1613] leading-none mb-2 font-normal">
+              Wedding ceremony
+            </h2>
+            <div class="space-y-1">
+              <p class="text-[14px] sm:text-[15px] font-normal text-[#1A1613]">
+                Saturday 21 November &middot; 8:00 pm
+              </p>
+              <p class="text-[13px] sm:text-[14px] text-[#6B625A] flex items-center gap-2">
+                <span>Narain Niwas Palace, Jaipur</span>
+                <span class="text-[#E4DCD1] select-none">&middot;</span>
+                <a href="#map" class="text-[#A1472F] hover:underline underline-offset-2 text-[12px] sm:text-[13px] font-medium tracking-[0.01em]">Map</a>
+              </p>
+              <p class="text-[12px] sm:text-[13px] text-[#6B625A] pt-0.5 font-light italic">
+                Dress code: Formal traditional attire
+              </p>
+            </div>
+          </div>
+
+          <!-- Function 5: Reception -->
+          <div class="relative pl-7 sm:pl-8 group">
+            <!-- Node Marker -->
+            <div class="absolute left-0 top-[10px] w-[11px] h-[11px] rotate-45 bg-[#FAF7F2] border border-[#A1472F] shadow-[0_0_0_3px_#FAF7F2]"></div>
+
+            <h2 class="font-serif text-[26px] sm:text-[28px] text-[#1A1613] leading-none mb-2 font-normal">
+              Reception
+            </h2>
+            <div class="space-y-1">
+              <p class="text-[14px] sm:text-[15px] font-normal text-[#1A1613]">
+                Sunday 22 November &middot; 7:00 pm
+              </p>
+              <p class="text-[13px] sm:text-[14px] text-[#6B625A] flex items-center gap-2">
+                <span>Hotel Clarks Amer, Jaipur</span>
+                <span class="text-[#E4DCD1] select-none">&middot;</span>
+                <a href="#map" class="text-[#A1472F] hover:underline underline-offset-2 text-[12px] sm:text-[13px] font-medium tracking-[0.01em]">Map</a>
+              </p>
+              <p class="text-[12px] sm:text-[13px] text-[#6B625A] pt-0.5 font-light italic">
+                Dress code: Black tie or formal Indian
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Closing Line -->
+    <footer class="text-center pt-8 sm:pt-12 border-t border-[#E4DCD1]/60 mt-auto">
+      <p class="text-[12px] sm:text-[13px] leading-relaxed text-[#6B625A] font-light max-w-[340px] mx-auto">
+        Keep this link &mdash; it is yours, and it always shows the latest schedule.
+      </p>
+    </footer>
+
+  </main>
+
+</body>
+</html>

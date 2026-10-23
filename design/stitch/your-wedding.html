@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeMyMarriage — Your Wedding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #FAF7F2;
+      --surface: #FFFFFF;
+      --inset: #F4EFE8;
+      --text-primary: #1A1613;
+      --text-secondary: #6B625A;
+      --border: #E4DCD1;
+      --accent: #A1472F;
+      --accent-hover: #8A3B26;
+      --deep-contrast: #1F4D42;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif-custom {
+      font-family: 'Instrument Serif', serif;
+    }
+    .wedding-card {
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+    .wedding-card:hover {
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#FAF7F2]">
+  <!-- TOP BAR -->
+  <header class="w-full h-[72px] bg-[#FAF7F2] border-b border-[#E4DCD1] px-8 flex items-center justify-between shrink-0">
+    <!-- Brand wordmark / logo -->
+    <div class="flex items-center gap-2.5">
+      <img src="https://lh3.googleusercontent.com/aida/AEtjO1WGsk3VUmANBY7Ldnxu-jRgvB4AeDHsdHab6ZxNKYBuYy6JKrwU3fa6l5YKIXSZ0Fc9yaDbRYdXilfHuf5fKVwSTndNib9BKTSpXBJu2Ve5Z4k9QjTP1MWWYJIO04itncsgWYll9iqkjVg9Gyg1Ce4vFoIy4iQUcpMGkA8NNFjPtpgp-Fznkvb0TQ37n9HKLsWwS7Vnt8jPcExcBhMmMTaFXsiMz-0WixTaqAf6pqM7Vbo52Dvac2yWxkzz" alt="MakeMyMarriage" class="w-7 h-7 object-contain" />
+      <span class="font-serif-custom text-[22px] tracking-tight text-[#1A1613]">MakeMyMarriage</span>
+    </div>
+
+    <!-- User / Sign out -->
+    <div class="flex items-center gap-4 text-[14px]">
+      <span class="text-[#6B625A]">priya@example.com</span>
+      <span class="text-[#E4DCD1]">·</span>
+      <a href="#signout" class="text-[#6B625A] hover:text-[#1A1613] transition-colors">Sign out</a>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-1 w-full max-w-[720px] mx-auto px-6 pt-12 pb-24">
+    <!-- Page Header -->
+    <div class="mb-10">
+      <h1 class="font-serif-custom text-[36px] leading-[1.15] text-[#1A1613] font-normal">
+        Your wedding
+      </h1>
+      <p class="text-[15px] text-[#6B625A] mt-1.5 font-normal">
+        Signed in as priya@example.com
+      </p>
+    </div>
+
+    <!-- 3. PENDING INVITATION BLOCK -->
+    <div class="mb-10 bg-white rounded-[10px] border border-[#E4DCD1] p-6 relative overflow-hidden flex items-center justify-between shadow-none">
+      <!-- 3px Terracotta bar down its left edge -->
+      <div class="absolute left-0 top-0 bottom-0 w-[3px] bg-[#A1472F]"></div>
+
+      <div class="pl-2 pr-4">
+        <div class="text-[12px] font-medium uppercase tracking-[0.08em] text-[#A1472F] mb-1">
+          INVITATION
+        </div>
+        <div class="font-serif-custom text-[22px] text-[#1A1613] leading-snug">
+          Kavya &amp; Nikhil
+        </div>
+        <div class="text-[14px] text-[#6B625A] mt-0.5">
+          Rajesh Sharma invited you to help as an Admin.
+        </div>
+      </div>
+
+      <button type="button" class="shrink-0 h-[44px] px-6 rounded-[10px] bg-[#A1472F] hover:bg-[#8A3B26] text-white text-[15px] font-medium transition-colors cursor-pointer flex items-center justify-center">
+        Accept
+      </button>
+    </div>
+
+    <!-- 4. SECTION LABEL -->
+    <div class="text-[13px] font-medium uppercase tracking-[0.08em] text-[#6B625A] mb-3">
+      YOUR WEDDING
+    </div>
+
+    <!-- 5. LARGE WEDDING CARD -->
+    <a href="#dashboard" class="wedding-card block bg-white rounded-[10px] border border-[#E4DCD1] p-[28px] relative cursor-pointer no-underline shadow-none">
+      <!-- Role pill in top right -->
+      <div class="absolute top-[28px] right-[28px]">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-[12px] font-medium text-[#A1472F] bg-[#FAF7F2] border border-[#E4DCD1]">
+          Admin
+        </span>
+      </div>
+
+      <!-- Couple names -->
+      <div class="font-serif-custom text-[30px] leading-tight text-[#1A1613] pr-20">
+        Meera &amp; Arjun
+      </div>
+
+      <!-- Metadata line -->
+      <div class="text-[15px] text-[#6B625A] mt-1.5">
+        Udaipur · 13 December 2026
+      </div>
+
+      <!-- Thin rule -->
+      <div class="w-full h-px bg-[#E4DCD1] my-6"></div>
+
+      <!-- Row of three statistics -->
+      <div class="grid grid-cols-3 gap-6">
+        <div>
+          <div class="font-serif-custom text-[24px] text-[#1A1613] tabular-nums leading-none">
+            6
+          </div>
+          <div class="text-[12px] font-medium uppercase tracking-[0.08em] text-[#6B625A] mt-2">
+            FUNCTIONS
+          </div>
+        </div>
+        <div>
+          <div class="font-serif-custom text-[24px] text-[#1A1613] tabular-nums leading-none">
+            248
+          </div>
+          <div class="text-[12px] font-medium uppercase tracking-[0.08em] text-[#6B625A] mt-2">
+            GUESTS
+          </div>
+        </div>
+        <div>
+          <div class="font-serif-custom text-[24px] text-[#1A1613] tabular-nums leading-none">
+            4
+          </div>
+          <div class="text-[12px] font-medium uppercase tracking-[0.08em] text-[#6B625A] mt-2">
+            ORGANIZERS
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- 6. WEDDING SETTINGS LINK -->
+    <div class="mt-4">
+      <a href="#settings" class="inline-block text-[15px] font-normal text-[#A1472F] hover:text-[#8A3B26] transition-colors cursor-pointer">
+        Wedding settings
+      </a>
+    </div>
+  </main>
+</body>
+</html>

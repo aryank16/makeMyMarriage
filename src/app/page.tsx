@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getSignedInEmail } from '@/lib/auth/session';
 import SiteNav from '@/components/landing/site-nav';
 import Hero from '@/components/landing/hero';
 import { CredibilityBand, Problem } from '@/components/landing/problem';
@@ -18,12 +19,18 @@ export const metadata: Metadata = {
     'Track who’s invited to which function, collect RSVPs without asking anyone to sign up, and keep every photo in one gallery.',
 };
 
-export default function Home() {
+export default async function Home() {
+  /* Reading the session makes this page render per request rather than
+   * statically. That is the price of the page being able to tell you that
+   * you are signed in, and it is worth paying: the proxy already resolves
+   * the session on every request to "/" anyway. */
+  const signedIn = await getSignedInEmail();
+
   return (
     <>
-      <SiteNav />
+      <SiteNav signedIn={signedIn} />
       <main>
-        <Hero />
+        <Hero signedIn={signedIn} />
         <CredibilityBand />
         <Problem />
         <HowItWorks />
@@ -31,9 +38,9 @@ export default function Home() {
         <GuestRsvp />
         <Gallery />
         <EverythingElse />
-        <Pricing />
+        <Pricing signedIn={signedIn} />
         <Faq />
-        <FinalCta />
+        <FinalCta signedIn={signedIn} />
       </main>
       <SiteFooter />
     </>

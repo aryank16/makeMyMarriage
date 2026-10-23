@@ -3,7 +3,6 @@ import {
   AuthorizationError,
   NotAMemberError,
   requirePermission,
-  visibleBudgetSides,
 } from '../src/lib/auth/require-permission';
 import {
   MODULES,
@@ -105,7 +104,7 @@ describe('tenant isolation', () => {
     await makeMembership({
       weddingId: wedding.id,
       userId: pending.id,
-      role: 'PARENT',
+      role: 'MANAGER',
       accepted: false,
     });
 
@@ -115,71 +114,75 @@ describe('tenant isolation', () => {
   });
 });
 
-describe('module scopes', () => {
-  it('lets a coordinator manage guests', async () => {
-    const { user, wedding } = await makeTenant('COORDINATOR', 'BRIDE');
-    const ctx = await require_(user.id, wedding.id, 'guests', 'write');
-    expect(ctx.scope.guests).toBe('write');
+describe('the two roles', () => {
+  it('lets a manager run the whole wedding', async () => {
+    // Both roles plan: a family splitting the work must not discover that
+    // whoever holds the guest list cannot also pay the caterer.
+    const { user, wedding } = await makeTenant('MANAGER');
+
+    for (const [module, level] of [
+      ['guests', 'write'],
+      ['events', 'write'],
+      ['vendors', 'write'],
+      ['budget', 'write'],
+      ['photos', 'write'],
+      ['tasks', 'write'],
+    ] as const) {
+      await expect(
+        require_(user.id, wedding.id, module, level),
+        `a manager should hold ${module}:${level}`,
+      ).resolves.toBeTruthy();
+    }
   });
 
-  it('refuses a coordinator any access to the budget', async () => {
-    // The cousin who runs the guest list and never sees money.
-    const { user, wedding } = await makeTenant('COORDINATOR', 'BRIDE');
-    await expect(
-      require_(user.id, wedding.id, 'budget', 'read_own_side'),
-    ).rejects.toBeInstanceOf(AuthorizationError);
-  });
+  it('refuses a manager any say over who has access', async () => {
+    const { user, wedding } = await makeTenant('MANAGER');
 
-  it('refuses a contributor write access to guests but allows photos', async () => {
-    const { user, wedding } = await makeTenant('CONTRIBUTOR');
-    await expect(
-      require_(user.id, wedding.id, 'guests', 'write'),
-    ).rejects.toBeInstanceOf(AuthorizationError);
-    await expect(
-      require_(user.id, wedding.id, 'photos', 'write'),
-    ).resolves.toBeTruthy();
-  });
-
-  it('refuses a viewer any sight of the guest list', async () => {
-    const { user, wedding } = await makeTenant('VIEWER');
-    await expect(
-      require_(user.id, wedding.id, 'guests', 'read'),
-    ).rejects.toBeInstanceOf(AuthorizationError);
-  });
-
-  it('refuses a planner the ability to invite members', async () => {
-    const { user, wedding } = await makeTenant('PLANNER');
     await expect(
       require_(user.id, wedding.id, 'members', 'invite'),
     ).rejects.toBeInstanceOf(AuthorizationError);
+    await expect(
+      require_(user.id, wedding.id, 'members', 'manage'),
+    ).rejects.toBeInstanceOf(AuthorizationError);
   });
 
-  it('lets only the owner manage members', async () => {
-    const owner = await makeTenant('OWNER');
+  it('lets only an admin manage members', async () => {
+    const admin = await makeTenant('ADMIN');
     await expect(
-      require_(owner.user.id, owner.wedding.id, 'members', 'manage'),
+      require_(admin.user.id, admin.wedding.id, 'members', 'manage'),
     ).resolves.toBeTruthy();
 
-    const parent = await makeTenant('PARENT');
+    const manager = await makeTenant('MANAGER');
     await expect(
-      require_(parent.user.id, parent.wedding.id, 'members', 'manage'),
+      require_(manager.user.id, manager.wedding.id, 'members', 'manage'),
     ).rejects.toBeInstanceOf(AuthorizationError);
+  });
+
+  it('gives both roles the whole expense log', async () => {
+    // Sides are gone: every organizer sees all of the spending.
+    for (const role of ['ADMIN', 'MANAGER'] as const) {
+      const { user, wedding } = await makeTenant(role);
+      await expect(
+        require_(user.id, wedding.id, 'budget', 'write'),
+        `${role} should see the full budget`,
+      ).resolves.toBeTruthy();
+    }
   });
 
   it('honours an explicit permission override over the role default', async () => {
     // The stored JSON is the source of truth; the role is only a default.
-    const owner = await makeUser();
-    const wedding = await makeWedding(owner.id);
-    const restricted = await makeUser('Restricted parent');
+    const admin = await makeUser();
+    const wedding = await makeWedding(admin.id);
+    const restricted = await makeUser('Restricted manager');
     await makeMembership({
       weddingId: wedding.id,
       userId: restricted.id,
-      role: 'PARENT',
-      permissions: { ...ROLE_DEFAULTS.PARENT, budget: 'none', guests: 'read' },
+      role: 'MANAGER',
+      permissions: { ...ROLE_DEFAULTS.MANAGER, budget: 'none', guests: 'read' },
     });
 
     await expect(
-      require_(restricted.id, wedding.id, 'budget', 'read_own_side'),
+      require_(restricted.id, wedding.id, 'budget', 'read'),
     ).rejects.toBeInstanceOf(AuthorizationError);
     await expect(
       require_(restricted.id, wedding.id, 'guests', 'write'),
@@ -190,82 +193,6 @@ describe('module scopes', () => {
   });
 });
 
-describe('budget side scoping', () => {
-  it("hides the other family's spend from a bride-side parent", async () => {
-    const { user, wedding } = await makeTenant('PARENT', 'BRIDE');
-    const ctx = await require_(user.id, wedding.id, 'budget', 'read_own_side');
-    const sides = await visibleBudgetSides(ctx, prisma);
-
-    expect(sides.sort()).toEqual(['BRIDE', 'SHARED']);
-    expect(sides).not.toContain('GROOM');
-  });
-
-  it('gives a hired planner both sides, because that is the job', async () => {
-    const { user, wedding } = await makeTenant('PLANNER', 'SHARED');
-    const ctx = await require_(user.id, wedding.id, 'budget', 'read');
-    const sides = await visibleBudgetSides(ctx, prisma);
-
-    expect(sides.sort()).toEqual(['BRIDE', 'GROOM', 'SHARED']);
-  });
-
-  it("reveals the other side only once that side opts into sharing", async () => {
-    const brideParent = await makeUser('Bride side parent');
-    const wedding = await makeWedding(brideParent.id);
-    await makeMembership({
-      weddingId: wedding.id,
-      userId: brideParent.id,
-      role: 'PARENT',
-      side: 'BRIDE',
-    });
-
-    const ctxBefore = await require_(
-      brideParent.id,
-      wedding.id,
-      'budget',
-      'read_own_side',
-    );
-    expect(await visibleBudgetSides(ctxBefore, prisma)).not.toContain('GROOM');
-
-    const groomParent = await makeUser('Groom side parent');
-    await makeMembership({
-      weddingId: wedding.id,
-      userId: groomParent.id,
-      role: 'PARENT',
-      side: 'GROOM',
-      sharesBudget: true,
-    });
-
-    const ctxAfter = await require_(
-      brideParent.id,
-      wedding.id,
-      'budget',
-      'read_own_side',
-    );
-    expect(await visibleBudgetSides(ctxAfter, prisma)).toContain('GROOM');
-  });
-
-  it('gives no budget sides at all to someone with no budget access', async () => {
-    const { user, wedding } = await makeTenant('COORDINATOR', 'BRIDE');
-    const ctx = await require_(user.id, wedding.id, 'guests', 'write');
-    expect(await visibleBudgetSides(ctx, prisma)).toEqual([]);
-  });
-
-  it('does not leak sharing across weddings', async () => {
-    const a = await makeTenant('PARENT', 'BRIDE');
-    const b = await makeTenant('PARENT', 'BRIDE');
-    const sharer = await makeUser('Groom side, other wedding');
-    await makeMembership({
-      weddingId: b.wedding.id,
-      userId: sharer.id,
-      role: 'PARENT',
-      side: 'GROOM',
-      sharesBudget: true,
-    });
-
-    const ctx = await require_(a.user.id, a.wedding.id, 'budget', 'read_own_side');
-    expect(await visibleBudgetSides(ctx, prisma)).not.toContain('GROOM');
-  });
-});
 
 describe('permission scope integrity', () => {
   it('every role default is a valid scope covering every module', () => {
@@ -295,7 +222,7 @@ describe('permission scope integrity', () => {
       data: {
         weddingId: wedding.id,
         userId: owner.id,
-        role: 'OWNER',
+        role: 'ADMIN',
         side: 'SHARED',
         permissions: { guests: 'superuser' },
         acceptedAt: new Date(),

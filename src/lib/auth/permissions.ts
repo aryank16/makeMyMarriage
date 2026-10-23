@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { Role, Side } from '@prisma/client';
+import type { Role } from '@prisma/client';
 
 /**
  * Permissions are a scope object per module, never a boolean admin flag.
@@ -52,73 +52,39 @@ export const permissionScopeSchema = z.object({
 export type PermissionScope = z.infer<typeof permissionScopeSchema>;
 
 /**
- * Role default bundles. Budget defaults to own-side only for every family
- * role: a shared workspace must not disclose one family's itemised spend to
- * the other by default. The hired planner is the single cross-side exception,
- * because that is the job.
+ * What each role may do.
+ *
+ * Two roles, per the spec. Both can run the whole wedding — guests, events,
+ * vendors, money, photos, tasks — because a family splitting the work does
+ * not want to discover that the person holding the guest list cannot also
+ * pay the caterer.
+ *
+ * The single difference is `members`. Only an Admin can bring someone in,
+ * remove them, or change a role, which keeps control of who has access in
+ * the hands of the people whose wedding it is.
+ *
+ * The scope object stays even though both rows now look alike apart from one
+ * field: it is what requirePermission reads, every stored membership already
+ * carries one, and a third role later changes this table instead of the
+ * checks scattered through the app.
  */
 export const ROLE_DEFAULTS: Record<Role, PermissionScope> = {
-  OWNER: {
+  ADMIN: {
     guests: 'write',
     events: 'write',
     vendors: 'write',
-    budget: 'write_own_side',
+    budget: 'write',
     photos: 'write',
     tasks: 'write',
     members: 'manage',
   },
-  COUPLE: {
+  MANAGER: {
     guests: 'write',
     events: 'write',
     vendors: 'write',
-    budget: 'write_own_side',
+    budget: 'write',
     photos: 'write',
     tasks: 'write',
-    members: 'invite',
-  },
-  PARENT: {
-    guests: 'write',
-    events: 'write',
-    vendors: 'write',
-    budget: 'write_own_side',
-    photos: 'write',
-    tasks: 'write',
-    members: 'invite',
-  },
-  PLANNER: {
-    guests: 'write',
-    events: 'write',
-    vendors: 'write',
-    budget: 'read',
-    photos: 'write',
-    tasks: 'write',
-    members: 'none',
-  },
-  COORDINATOR: {
-    guests: 'write',
-    events: 'read',
-    vendors: 'read',
-    budget: 'none',
-    photos: 'write',
-    tasks: 'write',
-    members: 'none',
-  },
-  CONTRIBUTOR: {
-    guests: 'read',
-    events: 'read',
-    vendors: 'none',
-    budget: 'none',
-    photos: 'write',
-    tasks: 'read',
-    members: 'none',
-  },
-  VIEWER: {
-    guests: 'none',
-    events: 'read',
-    vendors: 'none',
-    budget: 'none',
-    photos: 'read',
-    tasks: 'read',
     members: 'none',
   },
 };
@@ -148,18 +114,3 @@ export function parseScope(value: unknown): PermissionScope {
   return permissionScopeSchema.parse(value);
 }
 
-/**
- * Which budget sides this member may see, before accounting for other
- * memberships that have opted into sharing. SHARED is always visible to
- * anyone with any budget access at all.
- */
-export function ownBudgetSides(
-  level: BudgetLevel,
-  side: Side,
-): Side[] {
-  if (level === 'none') return [];
-  if (level === 'read' || level === 'write') {
-    return ['BRIDE', 'GROOM', 'SHARED'];
-  }
-  return side === 'SHARED' ? ['SHARED'] : [side, 'SHARED'];
-}

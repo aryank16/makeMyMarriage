@@ -1,6 +1,6 @@
-import Link from 'next/link';
+import StartCta from '@/components/landing/start-cta';
 
-export default function Pricing() {
+export default function Pricing({ signedIn }: { signedIn: string | null }) {
   return (
     <section
       id="early-access"
@@ -16,9 +16,7 @@ export default function Pricing() {
             plans a wedding with us during early access keeps it free through
             that wedding.
           </p>
-          <Link href="/signup" className="btn-primary">
-            Start planning for free
-          </Link>
+          <StartCta signedIn={signedIn} />
         </div>
       </div>
     </section>

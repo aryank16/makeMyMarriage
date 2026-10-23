@@ -13,7 +13,10 @@ export async function createWeddingAction(formData: FormData) {
     groomName: String(formData.get('groomName') ?? ''),
     weddingDate: rawDate ? new Date(`${rawDate}T00:00:00.000Z`) : null,
     primaryCity: String(formData.get('primaryCity') ?? ''),
-    creatorSide: (formData.get('creatorSide') as 'BRIDE' | 'GROOM' | 'SHARED') ?? 'SHARED',
+    // The form no longer asks which side you are on: the PRD has no sides,
+    // and Membership.side is a Phase A deletion. Until that migration lands
+    // the column still exists and has to be given something.
+    creatorSide: 'SHARED',
     eventKeys: formData.getAll('eventKeys').map(String),
   });
 

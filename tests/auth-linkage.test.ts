@@ -56,7 +56,7 @@ describe('linkAuthUser', () => {
       data: { name: 'Owner', email: 'owner@test.local' },
     });
     const wedding = await makeWedding(owner.id);
-    await makeMembership({ weddingId: wedding.id, userId: invited.id, role: 'PARENT' });
+    await makeMembership({ weddingId: wedding.id, userId: invited.id, role: 'MANAGER' });
 
     const auth = identity({ email: 'rakesh@test.local', name: 'Rakesh M' });
     const linked = await linkAuthUser(auth);
